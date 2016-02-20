@@ -1,0 +1,42 @@
+{
+  "name": "sauce-debug-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "build:dev": "webpack --config ./webpack.config.js",
+    "build:prod": "NODE_ENV=production webpack --config ./webpack.config.js",
+    "start:dev": "electron .",
+    "start": "NODE_ENV=production electron .",
+    "watch:dev": "npm run build:dev -- -w",
+    "watch:prod": "npm run build:prod -- -w",
+    "build_windows": "electron-packager . SauceDebugClient --platform=win32 --arch=x64 --version=0.35.6",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gavin Mogan <gavin@gavinmogan.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer": "^6.3.3",
+    "babel-core": "^6.5.2",
+    "babel-eslint": "^5.0.0",
+    "babel-loader": "^6.2.3",
+    "css-loader": "^0.23.1",
+    "electron-packager": "^5.2.1",
+    "electron-prebuilt": "^0.36.8",
+    "eslint": "^1.0.0",
+    "eslint-plugin-react": "^4.0.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
+    "node-sass": "^3.4.2",
+    "postcss-loader": "^0.8.1",
+    "sass-loader": "^3.1.2",
+    "style-loader": "^0.13.0",
+    "webpack": "^1.12.13"
+  },
+  "dependencies": {
+    "material-ui": "^0.14.4",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "react-tap-event-plugin": "^0.2.2"
+  }
+}
