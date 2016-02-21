@@ -1,5 +1,4 @@
 const path = require('path');
-const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -21,7 +20,7 @@ module.exports = {
     modulesDirectories: ['node_modules', 'src'],
   },
   entry: {
-    app: ['./src/entry.jsx'],
+    app: ['./src/index.js'],
   },
   output: {
     path: path.join(__dirname, 'public'),
@@ -30,27 +29,25 @@ module.exports = {
   },
   module: {
     loaders: [
+      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff&name=[path][name].[ext]" },
+      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader?name=[path][name].[ext]" },
       {
         test: /\.jsx?$/,
         include: /src/,
         loader: 'babel',
       },
-      {
-        test: /\.sass$/,
-        loader: 'style-loader!css-loader!autoprefixer-loader?{browsers:["last 2 version"]}!sass-loader',
-      },
+      { test: /\.css$/, loader:
+        ExtractTextPlugin.extract('style-loader', 'css-loader?sourceMap!resolve-url-loader') },
+      { test: /\.scss$/, loader:
+        ExtractTextPlugin.extract('style-loader', 'css-loader?sourceMap!resolve-url-loader!sass-loader?sourceMap') },
       {
         test: /\.(?:eot|ttf|woff2?)$/,
         loader: 'file-loader?name=[path][name]-[hash:6].[ext]&context=assets',
-      },
-    ].concat([
-      sassModuleLoader(false),
-    ]),
+      }
+    ]
   },
-  postcss: [
-    autoprefixer({browsers: ['last 2 versions']}),
-  ],
   plugins: [
+    new ExtractTextPlugin("[name].css"),
     new webpack.DefinePlugin({
       'process.env': {NODE_ENV: JSON.stringify(process.env.NODE_ENV)},
     }),
