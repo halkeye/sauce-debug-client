@@ -80,6 +80,13 @@ export default class App extends React.Component {
         >
             <TextField
               fullWidth={true}
+              hintText="Username"
+              floatingLabelText="Username"
+              type="text"
+            />
+            <br/>
+            <TextField
+              fullWidth={true}
               hintText="Access Key Field"
               floatingLabelText="Access Key"
               type="password"
