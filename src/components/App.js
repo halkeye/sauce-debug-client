@@ -28,6 +28,9 @@ export default class App extends React.Component {
   handleToggle = () => this.setState({open: !this.state.open});
   handleAddLogin = () => this.setState({ dialogOpen: true });
   handleCloseDialog = () => this.setState({ dialogOpen: false });
+  handleCreateLogin = () => {
+    this.handleCloseDialog();
+  }
 
   render () {
     const dialogActions = [
