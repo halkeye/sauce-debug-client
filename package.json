@@ -6,11 +6,11 @@
   "scripts": {
     "build:dev": "webpack --config ./webpack.config.js",
     "build:prod": "NODE_ENV=production webpack --config ./webpack.config.js",
-    "start:dev": "electron .",
+    "start:dev": "NODE_ENV=development electron .",
     "start": "NODE_ENV=production electron .",
     "watch:dev": "npm run build:dev -- -w",
     "watch:prod": "npm run build:prod -- -w",
-    "dev": "webpack-dev-server -d --hot --inline --host 0.0.0.0",
+    "dev": "webpack-dev-server -d --inline --host 0.0.0.0",
     "build_windows": "electron-packager . SauceDebugClient --platform=win32 --arch=x64 --version=0.35.6",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -37,7 +37,8 @@
     "resolve-url-loader": "^1.4.3",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
-    "webpack": "^1.12.13"
+    "webpack": "^1.12.13",
+    "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
     "material-icons": "^0.1.0",

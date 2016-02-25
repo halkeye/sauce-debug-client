@@ -22,12 +22,14 @@ app.on('ready', function() {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 800, height: 600});
 
-  // and load the index.html of the app.
-  mainWindow.loadURL('file://' + __dirname + '/public/index.html');
-
-  // Open the DevTools.
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV === 'development') {
+    // and load the index.html of the app.
+    mainWindow.loadURL('http://localhost:8080/index.html');
+    // Open the DevTools.
     mainWindow.webContents.openDevTools();
+  } else {
+    // and load the index.html of the app.
+    mainWindow.loadURL('file://' + __dirname + '/public/index.html');
   }
 
   // Emitted when the window is closed.

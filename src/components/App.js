@@ -1,11 +1,10 @@
 import React from 'react';
+import ManageLoginDialog from './ManageLoginDialog.js';
 
 import RaisedButton from 'material-ui/lib/raised-button';
-import FlatButton from 'material-ui/lib/flat-button';
 
 import AppBar from 'material-ui/lib/app-bar';
 import LeftNav from 'material-ui/lib/left-nav';
-import Dialog from 'material-ui/lib/dialog';
 
 import Menu from 'material-ui/lib/menus/menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
@@ -28,43 +27,29 @@ export default class App extends React.Component {
   handleToggle = () => this.setState({open: !this.state.open});
   handleAddLogin = () => this.setState({ dialogOpen: true });
   handleCloseDialog = () => this.setState({ dialogOpen: false });
-  handleCreateLogin = () => {
-    this.handleCloseDialog();
-  }
 
   render () {
-    const dialogActions = [
-      <FlatButton
-        label="Cancel"
-        secondary={true}
-        onTouchTap={this.handleCloseDialog}
-      />,
-      <FlatButton
-        label="Login"
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.handleCloseDialog}
-      />,
-    ];
-
+    const dialog = this.state.dialogOpen ? <ManageLoginDialog /> : null;
     return (
       <div>
-        <AppBar
-            title="Sauce REST Tester"
-            onLeftIconButtonTouchTap={this.handleToggle}
-            iconClassNameRight="muidocs-icon-navigation-expand-more" />
-        <LeftNav open={this.state.open} docked={false}>
-          <AppBar 
-              title="Logins" 
-              iconClassNameRight="mi mi-add-circle" 
+        <header>
+          <AppBar
+              title="Sauce REST Tester"
+              onLeftIconButtonTouchTap={this.handleToggle}
+              iconClassNameRight="muidocs-icon-navigation-expand-more" />
+        </header>
+        <LeftNav open={this.state.open} docked={true}>
+          <AppBar
+              title="Logins"
+              iconClassNameRight="mi mi-add-circle"
               onRightIconButtonTouchTap={this.handleAddLogin}
-              showMenuIconButton={false} 
+              showMenuIconButton={false}
           />
           <Menu>
             <MenuItem>Menu Item</MenuItem>
             <MenuItem>Menu Item 2</MenuItem>
           </Menu>
-          <AppBar 
+          <AppBar
               title="Previous Requests"
               showMenuIconButton={false}
           />
@@ -74,35 +59,7 @@ export default class App extends React.Component {
         </LeftNav>
 
         <AppContainer />
-        <Dialog
-          title="Add new Login"
-          actions={dialogActions}
-          modal={true}
-          open={this.state.dialogOpen}
-          onRequestClose={this.handleCloseDialog}
-        >
-            <TextField
-              fullWidth={true}
-              hintText="Username"
-              floatingLabelText="Username"
-              type="text"
-            />
-            <br/>
-            <TextField
-              fullWidth={true}
-              hintText="Access Key Field"
-              floatingLabelText="Access Key"
-              type="password"
-            />
-            <br/>
-            <TextField
-              fullWidth={true}
-              hintText="Sauce labs url"
-              floatingLabelText="URL"
-              type="url"
-              defaultValue="https://saucelabs.com/"
-            />
-            </Dialog>
+        {dialog}
       </div>
     );
   }
