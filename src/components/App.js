@@ -1,17 +1,12 @@
 import React from 'react';
 import ManageLoginDialog from './ManageLoginDialog.js';
 
-import RaisedButton from 'material-ui/lib/raised-button';
+import AppBar from 'react-toolbox/lib/app_bar';
+import {IconButton} from 'react-toolbox/lib/button';
+import Drawer from 'react-toolbox/lib/drawer';
 
-import AppBar from 'material-ui/lib/app-bar';
-import LeftNav from 'material-ui/lib/left-nav';
-
-import Menu from 'material-ui/lib/menus/menu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-
-import TextField from 'material-ui/lib/text-field';
-
-import 'material-icons/css/material-icons.css';
+import LoginsList from './LoginsList.js';
+import RequestsList from './RequestsList.js';
 
 const AppContainer = () => <div />;
 
@@ -33,30 +28,23 @@ export default class App extends React.Component {
     return (
       <div>
         <header>
-          <AppBar
-              title="Sauce REST Tester"
-              onLeftIconButtonTouchTap={this.handleToggle}
-              iconClassNameRight="muidocs-icon-navigation-expand-more" />
+          <AppBar fixed flat>
+            <IconButton icon='menu' flat onClick={this.handleToggle} />
+            <h2>Sauce REST Tester</h2>
+          </AppBar>
         </header>
-        <LeftNav open={this.state.open} docked={true}>
-          <AppBar
-              title="Logins"
-              iconClassNameRight="mi mi-add-circle"
-              onRightIconButtonTouchTap={this.handleAddLogin}
-              showMenuIconButton={false}
-          />
-          <Menu>
-            <MenuItem>Menu Item</MenuItem>
-            <MenuItem>Menu Item 2</MenuItem>
-          </Menu>
-          <AppBar
-              title="Previous Requests"
-              showMenuIconButton={false}
-          />
-          <Menu>
-            <MenuItem>/user/v1</MenuItem>
-          </Menu>
-        </LeftNav>
+        <Drawer active={this.state.open} onOverlayClick={this.handleToggle}>
+          <h2>
+            Logins
+            <IconButton icon='person_add' onClick={this.handleAddLogin} />
+          </h2>
+          <LoginsList />
+          <h2>
+            Previous Requests
+            <IconButton icon='add_to_queue' onClick={this.handleAddLogin} />
+          </h2>
+          <RequestsList />
+        </Drawer>
 
         <AppContainer />
         {dialog}

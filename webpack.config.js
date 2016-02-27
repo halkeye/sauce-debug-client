@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 const sassModuleLoader = (prod) => {
   const cssModulesOptions = prod ? '' : '&localIdentName=[name]__[local]___[hash:base64:5]';
@@ -16,8 +17,9 @@ const sassModuleLoader = (prod) => {
 const production = process.env.NODE_ENV === 'production';
 
 module.exports = {
+  postcss: [autoprefixer],
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js', '.jsx','.scss'],
     modulesDirectories: ['node_modules', 'src'],
   },
   entry: {
@@ -38,16 +40,21 @@ module.exports = {
         include: /src/,
         loader: 'babel',
       },
-      { test: /\.css$/, loader:
-        ExtractTextPlugin.extract('style-loader', 'css-loader?sourceMap!resolve-url-loader') },
-      { test: /\.scss$/, loader:
-        ExtractTextPlugin.extract('style-loader', 'css-loader?sourceMap!resolve-url-loader!sass-loader?sourceMap') },
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader?sourceMap!resolve-url-loader') 
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap!toolbox')
+      },
       {
         test: /\.(?:eot|ttf|woff2?)$/,
         loader: 'file-loader?name=[path][name]-[hash:6].[ext]&context=assets',
       }
     ]
   },
+  toolbox: {theme: 'src/theme.scss'},
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html'
@@ -68,5 +75,5 @@ module.exports = {
       // compress: {drop_console: true},
       sourceMap: false, // This means dropping build time from ~45 sec to ~32 sec
     })] : []),
-  devtool: 'hidden-source-map',
+  devtool: 'inline-source-map',
 };

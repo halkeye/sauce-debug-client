@@ -1,11 +1,7 @@
 import React from 'react';
 
-import FlatButton from 'material-ui/lib/flat-button';
-import Dialog from 'material-ui/lib/dialog';
-
-import TextField from 'material-ui/lib/text-field';
-
-import 'material-icons/css/material-icons.css';
+import Dialog from 'react-toolbox/lib/dialog';
+import Input from 'react-toolbox/lib/input';
 
 export default class ManageLoginDialog extends React.Component {
   constructor (props) {
@@ -21,46 +17,33 @@ export default class ManageLoginDialog extends React.Component {
 
   render () {
     const dialogActions = [
-      <FlatButton
-        label="Cancel"
-        secondary={true}
-        onTouchTap={this.handleCloseDialog}
-      />,
-      <FlatButton
-        label="Login"
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.handleCloseDialog}
-      />,
+      { label: 'Cancel', onClick: this.handleCloseDialog },
+      { label: 'Save', onClick: this.handleCloseDialog }
     ];
 
     return (
       <Dialog
-        title="Add new Login"
+        title='Add new Login'
         actions={dialogActions}
-        modal={true}
-        onRequestClose={this.handleCloseDialog}
+        onOverlayClick={this.handleCloseDialog}
+        active
       >
-        <TextField
-          fullWidth={true}
-          hintText="Username"
-          floatingLabelText="Username"
-          type="text"
+        <Input type='text'
+          required
+          label='Username'
+          floatingLabelText='Username'
         />
         <br/>
-        <TextField
-          fullWidth={true}
-          hintText="Access Key Field"
-          floatingLabelText="Access Key"
-          type="password"
+        <Input type='password'
+          required
+          label='Access Key Field'
+          floatingLabelText='Access Key'
         />
         <br/>
-        <TextField
-          fullWidth={true}
-          hintText="Sauce labs url"
-          floatingLabelText="URL"
-          type="url"
-          defaultValue="https://saucelabs.com/"
+        <Input type='url'
+          label='Sauce labs url'
+          floatingLabelText='URL'
+          value='https://saucelabs.com/'
         />
       </Dialog>
     );
