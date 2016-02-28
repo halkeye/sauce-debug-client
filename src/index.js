@@ -5,7 +5,9 @@ import ReactDOM from 'react-dom';
 import App from './components/App.js';
 import ToolboxApp from 'react-toolbox/lib/app';
 
-const store = {};
+import { createStore } from 'redux';
+import reducer from './reducers.js';
+let store = createStore(reducer);
 
 const Entry = () => (<ToolboxApp><App store={store} /></ToolboxApp>);
 

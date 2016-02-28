@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ManageLoginDialog from './ManageLoginDialog.js';
 
 import AppBar from 'react-toolbox/lib/app_bar';
@@ -8,9 +8,16 @@ import Drawer from 'react-toolbox/lib/drawer';
 import LoginsList from './LoginsList.js';
 import RequestsList from './RequestsList.js';
 
-const AppContainer = () => <div />;
+import { connect } from 'react-redux';
 
-export default class App extends React.Component {
+const mapStateToProps = (state) => {
+  return {
+    logins: state.logins,
+    requests: state.requests
+  };
+};
+
+/* export default */ class App extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -38,17 +45,20 @@ export default class App extends React.Component {
             Logins
             <IconButton icon='person_add' onClick={this.handleAddLogin} />
           </h2>
-          <LoginsList />
+          <LoginsList logins={this.props.logins} />
           <h2>
             Previous Requests
             <IconButton icon='add_to_queue' onClick={this.handleAddLogin} />
           </h2>
           <RequestsList />
         </Drawer>
-
-        <AppContainer />
         {dialog}
       </div>
     );
   }
 }
+
+export default connect(mapStateToProps)(App);
+App.propTypes = {
+  logins: PropTypes.array.isRequired
+};
