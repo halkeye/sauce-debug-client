@@ -23,8 +23,8 @@ var config = {
   },
   module: {
     loaders: [
-      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff&name=[path][name].[ext]" },
-      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader?name=[path][name].[ext]" },
+      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&minetype=application/font-woff&name=[path][name].[ext]' },
+      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader?name=[path][name].[ext]' },
       {
         test: /\.jsx?$/,
         include: /src/,
@@ -32,7 +32,7 @@ var config = {
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader?sourceMap!resolve-url-loader') 
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader?sourceMap!resolve-url-loader')
       },
       {
         test: /\.scss$/,
@@ -40,7 +40,7 @@ var config = {
       },
       {
         test: /\.(?:eot|ttf|woff2?)$/,
-        loader: 'file-loader?name=[path][name]-[hash:6].[ext]&context=assets',
+        loader: 'file-loader?name=[path][name]-[hash:6].[ext]&context=assets'
       }
     ]
   },
@@ -51,7 +51,7 @@ var config = {
     }),
     new ExtractTextPlugin('[name].css'),
     new webpack.DefinePlugin({
-      'process.env': {NODE_ENV: JSON.stringify(process.env.NODE_ENV)},
+      'process.env': {NODE_ENV: JSON.stringify(process.env.NODE_ENV)}
     }),
 
     // Moment.js imports the locales dynamically which is why webpack will include all 60 locales (>300kb)
@@ -59,7 +59,7 @@ var config = {
     // Here we "whitelist" the paths that will be imported when moment/locales/* is imported
     // We tell it that we are interested in de, en-gb, da & nl. Afrikaans etc. will stay out. :)
     // This results in a bundle size reduction of 300kb / 150KB minified
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /(de|en-gb|da|nl)$/),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /(de|en-gb|da|nl)$/)
   ].concat(production ? [
     new webpack.optimize.UglifyJsPlugin({
       // compress: {drop_console: true},
@@ -67,3 +67,5 @@ var config = {
     })] : []),
   devtool: 'inline-source-map'
 };
+
+module.exports = config;
