@@ -1,11 +1,10 @@
 import {dispatch} from 'redux';
-const ADD_LOGIN = 'ADD_LOGIN';
+export const ADD_LOGIN = 'ADD_LOGIN';
 
-function addLogin (login) {
+export function addLogin (username, password, server) {
+  console.log('addLogin');
   return {
     type: ADD_LOGIN,
-    object: login
+    object: { username, password, server }
   };
 }
-
-export const boundAddLogin = (login) => dispatch(addLogin(login));
