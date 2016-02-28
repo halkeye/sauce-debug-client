@@ -4,32 +4,22 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
-const sassModuleLoader = (prod) => {
-  const cssModulesOptions = prod ? '' : '&localIdentName=[name]__[local]___[hash:base64:5]';
-  const _loaders = `css?modules${cssModulesOptions}!postcss!sass`;
-  return {
-    test: /\.sass.module$/,
-    loader: !prod ? `style!${_loaders}` :
-      ExtractTextPlugin.extract('style', _loaders, {publicPath: ''}),
-  };
-};
-
 const production = process.env.NODE_ENV === 'production';
 
-module.exports = {
+var config = {
   postcss: [autoprefixer],
   resolve: {
-    extensions: ['', '.js', '.jsx','.scss'],
-    modulesDirectories: ['node_modules', 'src'],
+    extensions: ['', '.js', '.scss'],
+    modulesDirectories: ['node_modules', 'src']
   },
   entry: {
-    app: ['./src/index.js'],
+    app: ['./src/index.js']
   },
   output: {
-    target: "electron",
+    //target: 'electron',
     path: path.join(__dirname, 'public'),
 //    publicPath: '/public/',
-    filename: 'bundle.js',
+    filename: 'bundle.js'
   },
   module: {
     loaders: [
@@ -38,7 +28,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         include: /src/,
-        loader: 'babel',
+        loader: 'babel'
       },
       {
         test: /\.css$/,
@@ -59,7 +49,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html'
     }),
-    new ExtractTextPlugin("[name].css"),
+    new ExtractTextPlugin('[name].css'),
     new webpack.DefinePlugin({
       'process.env': {NODE_ENV: JSON.stringify(process.env.NODE_ENV)},
     }),
@@ -73,7 +63,7 @@ module.exports = {
   ].concat(production ? [
     new webpack.optimize.UglifyJsPlugin({
       // compress: {drop_console: true},
-      sourceMap: false, // This means dropping build time from ~45 sec to ~32 sec
+      sourceMap: false // This means dropping build time from ~45 sec to ~32 sec
     })] : []),
-  devtool: 'inline-source-map',
+  devtool: 'inline-source-map'
 };
