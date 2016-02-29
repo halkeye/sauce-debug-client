@@ -1,14 +1,27 @@
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import * as storage from 'redux-storage'
+import createEngine from 'redux-storage-engine-localStorage';
 
 import ToolboxApp from 'react-toolbox/lib/app';
 
 import App from './components/App.js';
 import reducer from './reducers.js';
 
-let store = createStore(reducer, undefined,  window.devToolsExtension ? window.devToolsExtension() : undefined);
+const engine = createEngine('sauce');
+const middleware = storage.createMiddleware(engine);
+const createStoreWithMiddleware = applyMiddleware(middleware)(createStore);
+
+let store = createStoreWithMiddleware(
+  storage.reducer(reducer), 
+  undefined,  
+  window.devToolsExtension ? window.devToolsExtension() : undefined
+);
+
+const load = storage.createLoader(engine);
+load(store);
 
 const Entry = () => (<ToolboxApp><App store={store} /></ToolboxApp>);
 
