@@ -2,7 +2,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
-import * as storage from 'redux-storage'
+import * as storage from 'redux-storage';
 import createEngine from 'redux-storage-engine-localStorage';
 
 import ToolboxApp from 'react-toolbox/lib/app';
@@ -10,13 +10,15 @@ import ToolboxApp from 'react-toolbox/lib/app';
 import App from './components/App.js';
 import reducer from './reducers.js';
 
+import 'bootstrap/dist/css/bootstrap.css';
+
 const engine = createEngine('sauce');
 const middleware = storage.createMiddleware(engine);
 const createStoreWithMiddleware = applyMiddleware(middleware)(createStore);
 
 let store = createStoreWithMiddleware(
-  storage.reducer(reducer), 
-  undefined,  
+  storage.reducer(reducer),
+  undefined,
   window.devToolsExtension ? window.devToolsExtension() : undefined
 );
 

@@ -7,6 +7,7 @@ import Drawer from 'react-toolbox/lib/drawer';
 
 import LoginsList from './LoginsList.js';
 import RequestsList from './RequestsList.js';
+import MainWindow from './MainWindow.js';
 
 import {addLogin} from '../actions.js';
 
@@ -36,16 +37,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   render () {
     return (
       <div>
-        <header>
-          <AppBar fixed flat>
-            <IconButton icon='menu' flat onClick={this.handleToggle} />
-            <h2>Sauce REST Tester</h2>
-          </AppBar>
-        </header>
-        <Drawer active={this.state.open} onOverlayClick={this.handleToggle}>
-          <LoginsList logins={this.props.logins} onAddLogin={this.props.onAddLogin} />
-          <RequestsList />
-        </Drawer>
+
+        <AppBar flat>
+          <IconButton icon='menu' flat onClick={this.handleToggle} />
+          <h2>Sauce REST Tester</h2>
+        </AppBar>
+        <MainWindow logins={this.props.logins} />
       </div>
     );
   }
