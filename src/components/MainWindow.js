@@ -1,6 +1,9 @@
 import url from 'url';
 
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { switchTab } from '../actions.js';
 
 import 'flexboxgrid';
 import 'roboto-font/css/fonts.css';
@@ -11,9 +14,10 @@ import Divider from 'muicss/lib/react/divider';
 import Dropdown from 'muicss/lib/react/dropdown';
 import DropdownItem from 'muicss/lib/react/dropdown-item';
 
+import TabBar from './TabBar.js';
 import Login from './Login.js';
 
-export default class MainWindow extends React.Component {
+class MainWindow extends React.Component {
   state = { selected: '' };
 
   handleChange = (value) => {
@@ -33,31 +37,28 @@ export default class MainWindow extends React.Component {
 
   render () {
     const values = []; // this.getMappedLogins();
-    console.log(JSON.stringify(values));
 
     /* Maybe do a Menu of logins? */
     return (
       <div>
-        <ul className='mui-tabs__bar'>
-          <li className='mui--is-active'><a>Tab-1</a></li>
-          <li><a>Tab-2</a></li>
-          <li><a>Tab-3</a></li>
-        </ul>
-        <div className='mui-tabs__pane mui--is-active'>
-          <div className='row'>
-            <div className='col-xs'>
-              Input
-            </div>
-            <div className='col-xs-3'>
-              <Dropdown color='primary' label='Login'>
-                <DropdownItem><Login login={{}} /></DropdownItem>
-                <Divider />
-                <DropdownItem>
-                  <i className='zmdi zmdi-account-add'></i>
-                  &nbsp;
-                  Manage
-                </DropdownItem>
-              </Dropdown>
+        <TabBar />
+        <div className=''>
+          <div className='mui-container'>
+            <div className='row'>
+              <div className='col-xs'>
+                Input
+              </div>
+              <div className='col-xs-3'>
+                <Dropdown color='primary' label='Login'>
+                  <DropdownItem><Login login={{}} /></DropdownItem>
+                  <Divider />
+                  <DropdownItem>
+                    ndStoreToMenu<i className='zmdi zmdi-account-add'></i>
+                    &nbsp;
+                    Manage
+                  </DropdownItem>
+                </Dropdown>
+              </div>
             </div>
           </div>
         </div>
@@ -67,4 +68,21 @@ export default class MainWindow extends React.Component {
 }
 
 MainWindow.propTypes = {
+  tab: PropTypes.string.isRequired,
+  logins: PropTypes.array.isRequired,
+  switchTab: PropTypes.func.isRequired
 };
+
+function mapDispatchToProps (dispatch) {
+  return bindActionCreators({ switchTab }, dispatch);
+}
+
+function mapStateToProps (state) {
+  return {
+    logins: state.logins,
+    tab: state.tab,
+    login: state.logins
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainWindow);

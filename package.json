@@ -87,6 +87,7 @@
     "material-design-iconic-font": "^2.2.0",
     "material-icons": "^0.1.0",
     "muicss": "^0.4.6",
+    "node-uuid": "^1.4.7",
     "react": "^0.14.7",
     "react-bootstrap": "^0.28.3",
     "react-dom": "^0.14.7",
