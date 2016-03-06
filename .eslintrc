@@ -1,5 +1,9 @@
 {
-  "plugins": ["react"],
-	"parser": "babel-eslint",
-  "extends": ["semistandard", "standard-react"]
+  "plugins": ["babel", "react"],
+  "extends": ["semistandard", "standard-react"],
+  "parser": "babel-eslint",
+  "rules": {
+    "babel/arrow-parens": [2, "always"],
+    "arrow-parens": 0
+  }
 }

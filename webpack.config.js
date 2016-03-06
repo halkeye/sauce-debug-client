@@ -16,14 +16,13 @@ var config = {
     app: ['./src/index.js']
   },
   output: {
-    //target: 'electron',
     path: path.join(__dirname, 'public'),
 //    publicPath: '/public/',
     filename: 'bundle.js'
   },
   module: {
     loaders: [
-      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&minetype=application/font-woff&name=[path][name].[ext]' },
+      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader?limit=10000&minetype=application/font-woff&name=[path][name].[ext]' },
       { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader?name=[path][name].[ext]' },
       {
         test: /\.jsx?$/,
@@ -36,7 +35,7 @@ var config = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap!toolbox')
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss?sourceMap!resolve-url!sass?sourceMap')
       },
       {
         test: /\.(?:eot|ttf|woff2?)$/,
@@ -67,5 +66,8 @@ var config = {
     })] : []),
   devtool: 'inline-source-map'
 };
+
+// const webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
+// config.target = webpackTargetElectronRenderer(config);
 
 module.exports = config;

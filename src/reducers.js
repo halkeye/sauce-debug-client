@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
+import { routerReducer as routing } from 'react-router-redux';
 
 import * as actions from './actions.js';
 
-const initialLogins = [];
-function logins (state = initialLogins, action) {
+function logins (state = [], action) {
   switch (action.type) {
     case actions.ADD_LOGIN:
       return [...state, action.object];
@@ -12,6 +12,17 @@ function logins (state = initialLogins, action) {
   }
 }
 
+function requests (state = [], action) {
+  switch (action.type) {
+    case actions.ADD_REQUEST:
+      return [...state, action.object];
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
-  logins
+  logins,
+  requests,
+  routing
 });
