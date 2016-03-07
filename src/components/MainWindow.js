@@ -10,6 +10,11 @@ import 'roboto-font/css/fonts.css';
 import 'material-design-iconic-font/dist/css/material-design-iconic-font.css';
 import 'muicss/lib/css/mui.css';
 
+// import Inspector from 'react-json-inspector';
+import { ObjectInspector } from 'react-inspector';
+import Input from 'muicss/lib/react/input';
+import Button from 'muicss/lib/react/button';
+import Panel from 'muicss/lib/react/panel';
 import Divider from 'muicss/lib/react/divider';
 import Dropdown from 'muicss/lib/react/dropdown';
 import DropdownItem from 'muicss/lib/react/dropdown-item';
@@ -18,7 +23,7 @@ import TabBar from './TabBar.js';
 import Login from './Login.js';
 
 class MainWindow extends React.Component {
-  state = { selected: '' };
+  state = { url: '' };
 
   handleChange = (value) => {
     this.setState({selected: value});
@@ -35,32 +40,46 @@ class MainWindow extends React.Component {
     });
   };
 
+  onChangeUrl = (ev) => {
+    this.setState({ url: ev.target.value });
+  }
+
   render () {
-    const values = []; // this.getMappedLogins();
+    const currentTabData = this.props.tabs.filter((tab) => tab.guid === this.props.tab).shift();
 
     /* Maybe do a Menu of logins? */
     return (
       <div>
         <TabBar />
-        <div className=''>
-          <div className='mui-container'>
-            <div className='row'>
-              <div className='col-xs'>
-                Input
-              </div>
-              <div className='col-xs-3'>
-                <Dropdown color='primary' label='Login'>
-                  <DropdownItem><Login login={{}} /></DropdownItem>
-                  <Divider />
-                  <DropdownItem>
-                    ndStoreToMenu<i className='zmdi zmdi-account-add'></i>
-                    &nbsp;
-                    Manage
-                  </DropdownItem>
-                </Dropdown>
-              </div>
+        <div className='mui-container'>
+          <div style={{ display: 'flex' }}>
+            <div style={{ flexGrow: 2 }}>
+              <Input
+                type='url'
+                label='URL'
+                floatingLabel
+                onChange={this.onChangeUrl}
+                value={this.state.url || currentTabData.url}
+              />
+            </div>
+            <div style={{ flexGrow: 1, marginRight: '1em' }}>
+              <Button color='primary' variant='raised' style={{ float: 'right' }}>Go</Button>
+            </div>
+            <div style={{ flexGrow: 1 }}>
+              <Dropdown color='primary' label='Account'>
+                <DropdownItem><Login login={{}} /></DropdownItem>
+                <Divider />
+                <DropdownItem>
+                  <i className='zmdi zmdi-account-add'></i>
+                  &nbsp;
+                  Manage
+                </DropdownItem>
+              </Dropdown>
             </div>
           </div>
+          <Panel>
+            <ObjectInspector data={{ key: 'value' }} initialExpandedPaths={['*']} />
+          </Panel>
         </div>
       </div>
     );
@@ -69,8 +88,8 @@ class MainWindow extends React.Component {
 
 MainWindow.propTypes = {
   tab: PropTypes.string.isRequired,
-  logins: PropTypes.array.isRequired,
-  switchTab: PropTypes.func.isRequired
+  tabs: PropTypes.array.isRequired,
+  logins: PropTypes.array.isRequired
 };
 
 function mapDispatchToProps (dispatch) {
@@ -81,7 +100,7 @@ function mapStateToProps (state) {
   return {
     logins: state.logins,
     tab: state.tab,
-    login: state.logins
+    tabs: state.tabs
   };
 }
 

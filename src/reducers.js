@@ -3,7 +3,10 @@ import { routerReducer as routing } from 'react-router-redux';
 
 import * as actions from './actions.js';
 
-function logins (state = [], action) {
+const initialLogins = [
+];
+
+function logins (state = initialLogins, action) {
   switch (action.type) {
     case actions.ADD_LOGIN:
       return [...state, action.object];
@@ -24,18 +27,17 @@ function requests (state = [], action) {
 const initialTabs = [
   {
     guid: '0fcd1577-a43b-4c8b-bee2-ed2db7dc6996',
-    label: 'TAB-1'
-  },
-  {
-    guid: '597319b0-5c10-4f5e-b436-448a0e8446a5',
-    label: 'TAB-2'
+    label: 'Info',
+    url: 'https://saucelabs.com/rest/v1/info/status'
   },
   {
     guid: 'feb952cf-f284-46d2-a066-a529cdd4573d',
-    label: 'TAB-3'
+    label: 'Appium',
+    url: 'https://saucelabs.com/rest/v1/info/platforms/appium'
   }
 ];
 
+/* FIXME -- these should be a map and immutable */
 function tabs (state = initialTabs, action) {
   return state;
   /*
