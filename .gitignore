@@ -37,3 +37,7 @@ public/*.js
 public/*.js.map
 public/*.css
 public/*.css.map
+
+
+# Initial Data (local only, don't commit)
+src/initial/*.json

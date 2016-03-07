@@ -3,7 +3,7 @@ import url from 'url';
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { switchTab } from '../actions.js';
+import { switchTab, fetchData } from '../actions.js';
 
 import 'flexboxgrid';
 import 'roboto-font/css/fonts.css';
@@ -25,49 +25,42 @@ import Login from './Login.js';
 class MainWindow extends React.Component {
   state = { url: '' };
 
-  handleChange = (value) => {
-    this.setState({selected: value});
-  };
-
-  getMappedLogins = () => {
-    return this.props.logins.map((login) => {
-      const parsedUrl = url.parse(login.server);
-      parsedUrl.auth = login.username;
-      return {
-        value: `${login.username}@${login.server}`,
-        label: url.format(parsedUrl)
-      };
-    });
-  };
-
   onChangeUrl = (ev) => {
     this.setState({ url: ev.target.value });
   }
 
-  render () {
-    const currentTabData = this.props.tabs.filter((tab) => tab.guid === this.props.tab).shift();
+  onClickRequest = () => {
+    this.props.fetchData(url.resolve(
+      this.props.currentTab.login.server,
+      /* FIXME - Set tab's url */
+      this.state.url || this.props.currentTab.url
+    ));
+  }
 
-    /* Maybe do a Menu of logins? */
+  render () {
     return (
       <div>
         <TabBar />
         <div className='mui-container'>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ flexGrow: 1 }}>
+              <Login login={this.props.currentTab.login} includeIcon={false} />
+            </div>
             <div style={{ flexGrow: 2 }}>
               <Input
                 type='url'
                 label='URL'
                 floatingLabel
                 onChange={this.onChangeUrl}
-                value={this.state.url || currentTabData.url}
+                value={this.state.url || this.props.currentTab.url}
               />
             </div>
             <div style={{ flexGrow: 1, marginRight: '1em' }}>
-              <Button color='primary' variant='raised' style={{ float: 'right' }}>Go</Button>
+              <Button color='primary' variant='raised' onClick={this.onClickRequest}>Go</Button>
             </div>
             <div style={{ flexGrow: 1 }}>
               <Dropdown color='primary' label='Account'>
-                <DropdownItem><Login login={{}} /></DropdownItem>
+                {this.props.logins.map((login) => <DropdownItem key={login.guid}><Login login={login} /></DropdownItem>)}
                 <Divider />
                 <DropdownItem>
                   <i className='zmdi zmdi-account-add'></i>
@@ -87,13 +80,15 @@ class MainWindow extends React.Component {
 }
 
 MainWindow.propTypes = {
+  fetchData: PropTypes.func.isRequired,
   tab: PropTypes.string.isRequired,
   tabs: PropTypes.array.isRequired,
+  currentTab: PropTypes.object.isRequired,
   logins: PropTypes.array.isRequired
 };
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ switchTab }, dispatch);
+  return bindActionCreators({ switchTab, fetchData }, dispatch);
 }
 
 function mapStateToProps (state) {
@@ -103,5 +98,13 @@ function mapStateToProps (state) {
     tabs: state.tabs
   };
 }
+function mergeProps (stateProps, dispatchProps, ownProps) {
+  const currentTab = stateProps.tabs.filter((tab) => tab.guid === stateProps.tab).shift();
+  const currentLogin = stateProps.logins.filter((login) => login.guid === currentTab.login).shift() || {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainWindow);
+  return Object.assign({}, stateProps, dispatchProps, ownProps, {
+    currentTab: { ...currentTab, login: currentLogin }
+  });
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(MainWindow);

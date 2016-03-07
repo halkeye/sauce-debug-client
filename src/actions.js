@@ -1,17 +1,47 @@
+import axios from 'axios';
+
 export const ADD_LOGIN = 'ADD_LOGIN';
 export const ADD_REQUEST = 'ADD_REQUEST';
 export const SWITCH_TAB = 'SWITCH_TAB';
 
+export const REQ_DATA = 'REQ_DATA';
+export const RECV_DATA = 'RECV_DATA';
+export const RECV_ERROR = 'RECV_ERROR';
+
 export function addLogin (username, password, server) {
-  return {
-    type: ADD_LOGIN,
-    object: { username, password, server }
-  };
+  return { type: ADD_LOGIN, object: { username, password, server } };
 }
 
 export function switchTab (tabGuid) {
-  return {
-    type: SWITCH_TAB,
-    object: tabGuid
+  return { type: SWITCH_TAB, object: tabGuid };
+}
+
+function requestData () {
+  return { type: REQ_DATA };
+}
+
+function receiveData (json) {
+  return { type: RECV_DATA, object: json };
+}
+
+function receiveError (json) {
+  return { type: RECV_ERROR, data: json };
+}
+
+export function fetchData (url) {
+  return function (dispatch) {
+    dispatch(requestData());
+    return axios({
+      url: url,
+      timeout: 20000,
+      method: 'get',
+      responseType: 'json'
+    })
+    .then(function (response) {
+      dispatch(receiveData(response.data));
+    })
+    .catch(function (response) {
+      dispatch(receiveError(response.data));
+    });
   };
 }
