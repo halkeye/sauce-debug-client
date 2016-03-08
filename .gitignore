@@ -41,3 +41,5 @@ public/*.css.map
 
 # Initial Data (local only, don't commit)
 src/initial/*.json
+app/
+dist/

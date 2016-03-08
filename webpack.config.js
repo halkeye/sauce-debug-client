@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -16,7 +17,7 @@ var config = {
     app: ['./src/index.js']
   },
   output: {
-    path: path.join(__dirname, 'public'),
+    path: path.join(__dirname, 'app', 'public'),
 //    publicPath: '/public/',
     filename: 'bundle.js'
   },
@@ -53,6 +54,9 @@ var config = {
     new webpack.DefinePlugin({
       'process.env': {NODE_ENV: JSON.stringify(process.env.NODE_ENV)}
     }),
+    new CopyWebpackPlugin([
+      { from: 'app_package.json', to: 'app/package.json' }
+    ]),
 
     // Moment.js imports the locales dynamically which is why webpack will include all 60 locales (>300kb)
     // if we don't override this behaviour.
