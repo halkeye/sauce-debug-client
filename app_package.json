@@ -7,8 +7,6 @@
   "author": "Gavin Mogan <gavin@gavinmogan.com>",
   "license": "MIT",
   "dependencies": {
-    "adm-zip": "^0.4.7",
-    "kew": "^0.7.0"
   },
   "build": {
     "app-bundle-id": "com.gavinmogan.sauce-debug-client",
