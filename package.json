@@ -8,6 +8,7 @@
     "test-watch": "npm test -- --watch",
     "test-e2e": "cross-env NODE_ENV=test mocha --compilers js:babel-core/register --require ./test/setup.js --require co-mocha ./test/e2e.js",
     "build": "cross-env NODE_ENV=production  webpack --config ./webpack.config.js  --progress --profile --colors",
+    "build:dev": "cross-env NODE_ENV=development  webpack --config ./webpack.config.js  --progress --profile --colors",
     "start:dev": "cross-env NODE_ENV=development electron .",
     "start": "cross-env NODE_ENV=production electron .",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --hot -d --inline --host 0.0.0.0 --port 3000",

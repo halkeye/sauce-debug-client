@@ -38,25 +38,28 @@ var config = {
       {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss?sourceMap!resolve-url!sass?sourceMap')
-      },
+      }/*,
       {
         test: /\.(?:eot|ttf|woff2?)$/,
         loader: 'file-loader?name=[path][name]-[hash:6].[ext]&context=assets'
-      }
+      }*/
     ]
   },
   toolbox: {theme: 'src/theme.scss'},
   plugins: [
+    /*
     new HtmlWebpackPlugin({
       template: './src/index.html'
     }),
+    */
     new ExtractTextPlugin('[name].css'),
     new webpack.DefinePlugin({
       'process.env': {NODE_ENV: JSON.stringify(process.env.NODE_ENV)}
     }),
     new CopyWebpackPlugin([
       { from: 'app_package.json', to: '../package.json' },
-      { from: 'main.js', to: '../main.js' }
+      { from: 'main.js', to: '../main.js' },
+      { from: 'src/index.' + process.env.NODE_ENV + '.html', to: 'index.html' }
     ]),
 
     // Moment.js imports the locales dynamically which is why webpack will include all 60 locales (>300kb)

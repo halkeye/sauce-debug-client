@@ -5,9 +5,12 @@ import 'material-design-iconic-font/dist/css/material-design-iconic-font.css';
 
 export default class Login extends React.Component {
   render () {
-    const parsedUrl = url.parse(this.props.login.server);
-    parsedUrl.auth = this.props.login.username;
-    const label = url.format(parsedUrl);
+    let label = '';
+    if (this.props.login.server) {
+      const parsedUrl = url.parse(this.props.login.server);
+      parsedUrl.auth = this.props.login.username;
+      label = url.format(parsedUrl);
+    }
     if (!this.props.includeIcon) { return <div>{label}</div>; }
     return (
       <div>

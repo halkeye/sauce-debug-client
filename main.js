@@ -33,7 +33,7 @@ app.on('ready', () => {
 
   if (process.env.NODE_ENV === 'development') {
     // and load the index.html of the app.
-    mainWindow.loadURL('http://localhost:3000/index.html');
+    mainWindow.loadURL('file://' + __dirname + '/src/index.development.html'); // eslint-disable-line no-path-concat
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
   } else {
