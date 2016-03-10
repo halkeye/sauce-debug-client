@@ -1,4 +1,5 @@
 import axios from 'axios';
+import UUID from 'node-uuid';
 
 export const ADD_LOGIN = 'ADD_LOGIN';
 export const LOAD_LOGINS = 'LOAD_LOGINS';
@@ -14,7 +15,8 @@ export function loadLogins (logins) {
 }
 
 export function addLogin (username, password, server) {
-  return { type: ADD_LOGIN, object: { username, password, server } };
+  const guid = UUID.v4();
+  return { type: ADD_LOGIN, object: { username, password, server, guid } };
 }
 
 export function switchTab (tabGuid) {

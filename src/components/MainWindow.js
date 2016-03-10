@@ -14,9 +14,10 @@ import { ObjectInspector } from 'react-inspector';
 import Input from 'muicss/lib/react/input';
 import Button from 'muicss/lib/react/button';
 import Panel from 'muicss/lib/react/panel';
-import Divider from 'muicss/lib/react/divider';
-import Dropdown from 'muicss/lib/react/dropdown';
-import DropdownItem from 'muicss/lib/react/dropdown-item';
+
+import Divider from 'material-ui/lib/divider';
+import SelectField from 'material-ui/lib/select-field';
+import MenuItem from 'material-ui/lib/menus/menu-item';
 
 import TabBar from './TabBar.js';
 import Login from './Login.js';
@@ -46,8 +47,7 @@ class MainWindow extends React.Component {
   onClickRequest = () => {
     this.props.fetchData(url.resolve(
       this.props.currentTab.login.server,
-      /* FIXME - Set tab's url */
-      this.state.url || this.props.currentTab.url
+      'rest/' + this.props.currentTab.url
     ));
   }
 
@@ -58,7 +58,15 @@ class MainWindow extends React.Component {
         <div className='mui-container'>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ flexGrow: 1 }}>
-              <Login login={this.props.currentTab.login} includeIcon={false} />
+              <SelectField value={ this.props.currentTab.login.guid }>
+                {this.props.logins.map((login) => <MenuItem key={login.guid} value={login.guid} primaryText={<Login login={login} includeIcon={false} />} />)}
+                <Divider />
+                <MenuItem key='manage' onClick={this.onClickManageAccounts}>
+                  <i className='zmdi zmdi-account-add'></i>
+                  &nbsp;
+                  Manage
+                </MenuItem>
+              </SelectField>
             </div>
             <div style={{ flexGrow: 2 }}>
               <Input
@@ -71,17 +79,6 @@ class MainWindow extends React.Component {
             </div>
             <div style={{ flexGrow: 1, marginRight: '1em' }}>
               <Button color='primary' variant='raised' onClick={this.onClickRequest}>Go</Button>
-            </div>
-            <div style={{ flexGrow: 1 }}>
-              <Dropdown color='primary' label='Account'>
-                {this.props.logins.map((login) => <DropdownItem key={login.guid}><Login login={login} /></DropdownItem>)}
-                <Divider />
-                <DropdownItem key='manage' onClick={this.onClickManageAccounts}>
-                  <i className='zmdi zmdi-account-add'></i>
-                  &nbsp;
-                  Manage
-                </DropdownItem>
-              </Dropdown>
             </div>
           </div>
           <Panel>
@@ -106,8 +103,10 @@ function mapStateToProps (state) {
 }
 function mergeProps (stateProps, dispatchProps, ownProps) {
   const currentTab = stateProps.tabs.filter((tab) => tab.guid === stateProps.tab).shift();
-  const currentLogin = stateProps.logins.filter((login) => login.guid === currentTab.login).shift() || {};
-
+  let currentLogin = stateProps.logins.filter((login) => login.guid === currentTab.login).shift();
+  if (currentLogin == null) {
+    currentLogin = stateProps.logins[0] || {};
+  }
   return Object.assign({}, stateProps, dispatchProps, ownProps, {
     currentTab: { ...currentTab, login: currentLogin }
   });

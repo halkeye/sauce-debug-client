@@ -38,6 +38,7 @@ class Accounts extends React.Component {
         <h4>Accounts</h4>
         <List subhader='Accounts'>{this.props.logins.map((login) => {
           return <ListItem
+            key={login.guid}
             rightIcon={<ActionInfo />}
             secondaryText={login.server}
             primaryText={login.username}
