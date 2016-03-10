@@ -7,21 +7,26 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-import { Link } from 'react-router';
-
 export default class App extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {open: false};
-  }
+  static contextTypes = {
+    router: React.PropTypes.object.isRequired
+  };
+  static propTypes = {
+    children: PropTypes.element.isRequired
+  };
+  state = { open: false };
 
   handleToggle = () => this.setState({open: !this.state.open});
   handleClose = () => this.setState({open: false});
   handleSetLeftNavState = (open) => this.setState({open});
-
-  static propTypes = {
-    children: PropTypes.element.isRequired
-  };
+  handleClickRequest = () => {
+    this.context.router.push({ pathname: '/' });
+    this.handleClose();
+  }
+  handleClickAccounts = () => {
+    this.context.router.push({ pathname: '/accounts' });
+    this.handleClose();
+  }
 
   render () {
     return (
@@ -33,8 +38,8 @@ export default class App extends Component {
           open={this.state.open}
           onRequestChange={this.handleSetLeftNavState}
         >
-          <MenuItem onTouchTap={this.handleClose}><Link to='/'>Requests</Link></MenuItem>
-          <MenuItem onTouchTap={this.handleClose}><Link to='/accounts'>Accounts</Link></MenuItem>
+          <MenuItem onTouchTap={this.handleClickRequest}>Requests</MenuItem>
+          <MenuItem onTouchTap={this.handleClickAccounts}>Accounts</MenuItem>
         </LeftNav>
         {this.props.children}
       </div>

@@ -28,8 +28,6 @@ class Accounts extends React.Component {
   }
 
   submitForm = (model) => {
-    // Submit your validated form
-    console.log('Model: ', model);
     this.props.addLogin(model.username, model.accesskey, model.server);
     this.refs.form.reset();
   }

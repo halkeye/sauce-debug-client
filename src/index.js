@@ -4,6 +4,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore, push } from 'react-router-redux';
+import { loadLogins } from './actions.js';
 
 // import * as storage from 'redux-storage';
 // import createEngine from 'redux-storage-engine-localstorage';
@@ -17,6 +18,12 @@ const history = syncHistoryWithStore(hashHistory, store);
 ipcRenderer.on('manage-accounts', () => {
   store.dispatch(push('/accounts'));
 });
+
+ipcRenderer.on('load-accounts', (event, data) => {
+  store.dispatch(loadLogins(data));
+});
+
+ipcRenderer.send('ready-load-accounts');
 
 const Entry = () => (
   <Provider store={store}>

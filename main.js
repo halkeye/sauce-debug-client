@@ -3,12 +3,15 @@
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
+const fs = require('fs');
+const path = require('path');
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const Menu = electron.Menu;
 const crashReporter = electron.crashReporter;
 const shell = electron.shell;
+const ipcMain = electron.ipcMain;
 let menu;
 let template;
 let mainWindow = null;
@@ -24,12 +27,32 @@ if (process.env.NODE_ENV === 'development') {
   require('electron-debug')();
 }
 
+const accountsFile = path.join(app.getPath('userData'), 'accounts.json');
+ipcMain.on('save-accounts', (event, accounts) => {
+  fs.writeFile(accountsFile, JSON.stringify(accounts));
+});
+
+ipcMain.on('ready-load-accounts', () => {
+  fs.access(accountsFile, fs.R_OK, function (err) {
+    if (err) return;
+    fs.readFile(accountsFile, function (err, data) {
+      if (err) return;
+      mainWindow.webContents.send('load-accounts', JSON.parse(data.toString()));
+    });
+  });
+});
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
 app.on('ready', () => {
   mainWindow = new BrowserWindow({ width: 1024, height: 728 });
+
+  ipcMain.on('save-accounts', (event, accounts) => {
+    const filename = path.join(app.getPath('userData'), 'accounts.json');
+    fs.writeFile(filename, JSON.stringify(accounts));
+  });
 
   if (process.env.NODE_ENV === 'development') {
     // and load the index.html of the app.

@@ -1,3 +1,5 @@
+const ipcRenderer = window.require('electron').ipcRenderer;
+
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
 
@@ -13,7 +15,11 @@ const initialLogins = initialData.logins || [];
 function logins (state = initialLogins, action) {
   switch (action.type) {
     case actions.ADD_LOGIN:
-      return [...state, action.object];
+      const accounts = [...state, action.object];
+      ipcRenderer.send('save-accounts', accounts);
+      return accounts;
+    case actions.LOAD_LOGINS:
+      return action.object.map((item) => item);
     default:
       return state;
   }

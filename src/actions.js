@@ -1,12 +1,17 @@
 import axios from 'axios';
 
 export const ADD_LOGIN = 'ADD_LOGIN';
-export const ADD_REQUEST = 'ADD_REQUEST';
+export const LOAD_LOGINS = 'LOAD_LOGINS';
+
 export const SWITCH_TAB = 'SWITCH_TAB';
 
 export const REQ_DATA = 'REQ_DATA';
 export const RECV_DATA = 'RECV_DATA';
 export const RECV_ERROR = 'RECV_ERROR';
+
+export function loadLogins (logins) {
+  return { type: LOAD_LOGINS, object: logins };
+}
 
 export function addLogin (username, password, server) {
   return { type: ADD_LOGIN, object: { username, password, server } };

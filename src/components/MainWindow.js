@@ -23,9 +23,24 @@ import Login from './Login.js';
 
 class MainWindow extends React.Component {
   state = { url: '' };
+  static contextTypes = {
+    router: React.PropTypes.object.isRequired
+  };
+
+  static propTypes = {
+    fetchData: PropTypes.func.isRequired,
+    tab: PropTypes.string.isRequired,
+    tabs: PropTypes.array.isRequired,
+    currentTab: PropTypes.object.isRequired,
+    logins: PropTypes.array.isRequired
+  };
 
   onChangeUrl = (ev) => {
     this.setState({ url: ev.target.value });
+  }
+
+  onClickManageAccounts = () => {
+    this.context.router.push({ pathname: '/accounts' });
   }
 
   onClickRequest = () => {
@@ -61,7 +76,7 @@ class MainWindow extends React.Component {
               <Dropdown color='primary' label='Account'>
                 {this.props.logins.map((login) => <DropdownItem key={login.guid}><Login login={login} /></DropdownItem>)}
                 <Divider />
-                <DropdownItem>
+                <DropdownItem key='manage' onClick={this.onClickManageAccounts}>
                   <i className='zmdi zmdi-account-add'></i>
                   &nbsp;
                   Manage
@@ -77,14 +92,6 @@ class MainWindow extends React.Component {
     );
   }
 }
-
-MainWindow.propTypes = {
-  fetchData: PropTypes.func.isRequired,
-  tab: PropTypes.string.isRequired,
-  tabs: PropTypes.array.isRequired,
-  currentTab: PropTypes.object.isRequired,
-  logins: PropTypes.array.isRequired
-};
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({ switchTab, fetchData }, dispatch);
