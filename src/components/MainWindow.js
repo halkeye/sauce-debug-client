@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { switchTab, fetchData } from '../actions.js';
 
-import 'flexboxgrid';
 import 'roboto-font/css/fonts.css';
 import 'material-design-iconic-font/dist/css/material-design-iconic-font.css';
 import 'muicss/lib/css/mui.css';

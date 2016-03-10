@@ -54,6 +54,13 @@ app.on('ready', () => {
       }, {
         type: 'separator'
       }, {
+        label: 'Accounts',
+        click () {
+          mainWindow.webContents.send('manage-accounts');
+        }
+      }, {
+        type: 'separator'
+      }, {
         label: 'Services',
         submenu: []
       }, {

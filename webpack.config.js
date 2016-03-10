@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -47,11 +46,6 @@ var config = {
   },
   toolbox: {theme: 'src/theme.scss'},
   plugins: [
-    /*
-    new HtmlWebpackPlugin({
-      template: './src/index.html'
-    }),
-    */
     new ExtractTextPlugin('[name].css'),
     new webpack.DefinePlugin({
       'process.env': {NODE_ENV: JSON.stringify(process.env.NODE_ENV)}
@@ -76,7 +70,7 @@ var config = {
   devtool: 'inline-source-map'
 };
 
-// const webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
-// config.target = webpackTargetElectronRenderer(config);
+//const webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
+//config.target = webpackTargetElectronRenderer(config);
 
 module.exports = config;
