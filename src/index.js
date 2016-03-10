@@ -25,6 +25,14 @@ ipcRenderer.on('load-accounts', (event, data) => {
 
 ipcRenderer.send('ready-load-accounts');
 
+let prevState = store.getState();
+store.subscribe(() => {
+  const state = store.getState();
+  if (prevState.logins !== state.logins) {
+    ipcRenderer.send('save-accounts', state.logins);
+  }
+});
+
 const Entry = () => (
   <Provider store={store}>
     <Router history={history} routes={routes} />

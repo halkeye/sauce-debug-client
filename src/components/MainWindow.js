@@ -58,7 +58,7 @@ class MainWindow extends React.Component {
         <div className='mui-container'>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ flexGrow: 1 }}>
-              <SelectField value={ this.props.currentTab.login.guid }>
+              <SelectField value={this.props.currentTab.login.guid}>
                 {this.props.logins.map((login) => <MenuItem key={login.guid} value={login.guid} primaryText={<Login login={login} includeIcon={false} />} />)}
                 <Divider />
                 <MenuItem key='manage' onClick={this.onClickManageAccounts}>

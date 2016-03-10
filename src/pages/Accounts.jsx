@@ -55,7 +55,7 @@ class Accounts extends React.Component {
             name='username'
             required
             hintText='Sauce Labs Username'
-            validations='isAlpha,minLength:1,maxLength:1000'
+            validations='isAlphanumeric,minLength:1,maxLength:1000'
           />
           <br />
           <FormsyText
@@ -69,8 +69,9 @@ class Accounts extends React.Component {
           <FormsyText
             name='server'
             type='url'
-            value='https://saucelabs.com/'
+            value='https://saucelabs.com/rest/'
             required
+            validations='minLength:1,maxLength:1000'
           />
           <br/>
           <RaisedButton
