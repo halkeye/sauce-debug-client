@@ -26,27 +26,41 @@ const initialTabs = [
     login: 'c3cd7e60-69ff-4740-a477-df0c418c6db0',
     guid: '0fcd1577-a43b-4c8b-bee2-ed2db7dc6996',
     label: 'Info',
-    url: 'v1/info/status'
+    url: 'rest/v1/info/status'
   },
   {
     login: 'c3cd7e60-69ff-4740-a477-df0c418c6db0',
     guid: 'feb952cf-f284-46d2-a066-a529cdd4573d',
     label: 'Appium',
-    url: 'v1/info/platforms/appium'
+    url: 'rest/v1/info/platforms/appium'
   }
 ];
 
 /* FIXME -- these should be a map and immutable */
 function tabs (state = initialTabs, action) {
-  return state;
-  /*
-  require('node-uuid').v4()
   switch (action.type) {
     case actions.SWITCH_TAB:
-      return action.object;
+      return state.map((tab) => {
+        if (tab.guid === action.object) {
+          return { ...tab, selected: true };
+        }
+        if (tab.selected === true) {
+          return { ...tab, selected: false };
+        }
+        return tab;
+      });
+    case actions.SWITCH_TAB_LOGIN:
+      return state.map((tab) => {
+        if (tab.guid === action.object.tab) {
+          return { ...tab, login: action.object.login };
+        }
+        return tab;
+      });
     default:
       return state;
   }
+  /*
+  require('node-uuid').v4()
   */
 }
 

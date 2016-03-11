@@ -5,6 +5,7 @@ export const ADD_LOGIN = 'ADD_LOGIN';
 export const LOAD_LOGINS = 'LOAD_LOGINS';
 
 export const SWITCH_TAB = 'SWITCH_TAB';
+export const SWITCH_TAB_LOGIN = 'SWITCH_TAB_LOGIN';
 
 export const REQ_DATA = 'REQ_DATA';
 export const RECV_DATA = 'RECV_DATA';
@@ -21,6 +22,10 @@ export function addLogin (username, password, server) {
 
 export function switchTab (tabGuid) {
   return { type: SWITCH_TAB, object: tabGuid };
+}
+
+export function switchTabLogin (tabGuid, loginGuid) {
+  return { type: SWITCH_TAB_LOGIN, object: { tab: tabGuid, login: loginGuid } };
 }
 
 function requestData () {
