@@ -11,8 +11,9 @@ import 'muicss/lib/css/mui.css';
 
 // import Inspector from 'react-json-inspector';
 import { ObjectInspector } from 'react-inspector';
-import Panel from 'muicss/lib/react/panel';
+// import Panel from 'muicss/lib/react/panel';
 
+import Paper from 'material-ui/lib/paper';
 import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
 import Divider from 'material-ui/lib/divider';
@@ -46,7 +47,7 @@ class MainWindow extends React.Component {
   }
 
   onClickRequest = () => {
-    this.props.fetchData(url.resolve(
+    this.props.fetchData(this.props.currentTab.guid, url.resolve(
       this.props.currentTab.login.server,
       this.props.currentTab.url
     ));
@@ -82,16 +83,16 @@ class MainWindow extends React.Component {
                 type='url'
                 floatingLabelText='URL'
                 onChange={this.onChangeUrl}
-                value={this.state.url || this.props.currentTab.url}
+                value={this.props.currentTab.url}
               />
             </div>
             <div style={{ flexGrow: 1, marginRight: '1em' }}>
               <RaisedButton primary onClick={this.onClickRequest} label='Go' />
             </div>
           </div>
-          <Panel>
-            <ObjectInspector data={{ key: 'value' }} initialExpandedPaths={['*']} />
-          </Panel>
+          <Paper zDepth={2}>
+            <ObjectInspector data={this.props.currentTab.response} initialExpandedPaths={['*']} />
+          </Paper>
         </div>
       </div>
     );

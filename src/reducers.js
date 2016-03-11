@@ -39,6 +39,13 @@ const initialTabs = [
 /* FIXME -- these should be a map and immutable */
 function tabs (state = initialTabs, action) {
   switch (action.type) {
+    case actions.RECV_DATA:
+      return state.map((tab) => {
+        if (tab.guid === action.object.tab) {
+          return { ...tab, response: action.object.json };
+        }
+        return tab;
+      });
     case actions.SWITCH_TAB:
       return state.map((tab) => {
         if (tab.guid === action.object) {
