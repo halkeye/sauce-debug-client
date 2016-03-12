@@ -44,7 +44,6 @@ var config = {
       }*/
     ]
   },
-  toolbox: {theme: 'src/theme.scss'},
   plugins: [
     new ExtractTextPlugin('[name].css'),
     new webpack.DefinePlugin({

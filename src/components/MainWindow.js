@@ -13,6 +13,7 @@ import 'muicss/lib/css/mui.css';
 import { ObjectInspector } from 'react-inspector';
 // import Panel from 'muicss/lib/react/panel';
 
+import CircularProgress from 'material-ui/lib/circular-progress';
 import Paper from 'material-ui/lib/paper';
 import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
@@ -61,7 +62,7 @@ class MainWindow extends React.Component {
     return (
       <div>
         <TabBar />
-        <div className='mui-container'>
+        <div id='appContent'>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ flexGrow: 2 }}>
               <SelectField
@@ -90,9 +91,11 @@ class MainWindow extends React.Component {
               <RaisedButton primary onClick={this.onClickRequest} label='Go' />
             </div>
           </div>
-          <Paper zDepth={2}>
-            <ObjectInspector data={this.props.currentTab.response} initialExpandedPaths={['*']} />
-          </Paper>
+          <div style={{ display: 'flex', alignItems: 'stretch', alignContent: 'stretch' }}>
+            <Paper style={{ width: '100%', height: '100%', textAlign: 'center' }} zDepth={2}>
+              {this.props.currentTab.response ? <ObjectInspector data={this.props.currentTab.response} initialExpandedPaths={['*']} /> : <CircularProgress size={2} />}
+            </Paper>
+          </div>
         </div>
       </div>
     );

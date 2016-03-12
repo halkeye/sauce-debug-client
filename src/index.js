@@ -6,6 +6,8 @@ import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore, push } from 'react-router-redux';
 import { loadLogins } from './actions.js';
 
+import 'app.css';
+
 // import * as storage from 'redux-storage';
 // import createEngine from 'redux-storage-engine-localstorage';
 

@@ -69,7 +69,7 @@ class Accounts extends React.Component {
           <FormsyText
             name='server'
             type='url'
-            value='https://saucelabs.com/rest/'
+            value='https://saucelabs.com/'
             required
             validations='minLength:1,maxLength:1000'
           />
