@@ -61,7 +61,7 @@ app.on('ready', () => {
     mainWindow.webContents.openDevTools();
   } else {
     // and load the index.html of the app.
-    mainWindow.loadURL('file://' + __dirname + '/public/index.html'); // eslint-disable-line no-path-concat
+    mainWindow.loadURL('file://' + __dirname + '/public/index.production.html'); // eslint-disable-line no-path-concat
   }
 
   mainWindow.on('closed', () => {
