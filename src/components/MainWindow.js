@@ -9,7 +9,7 @@ import 'roboto-font/css/fonts.css';
 import 'material-design-iconic-font/dist/css/material-design-iconic-font.css';
 import 'muicss/lib/css/mui.css';
 
-// import Inspector from 'react-json-inspector';
+import JSONPretty from 'react-json-pretty';
 import { ObjectInspector } from 'react-inspector';
 // import Panel from 'muicss/lib/react/panel';
 
@@ -93,7 +93,7 @@ class MainWindow extends React.Component {
           </div>
           <div style={{ display: 'flex', alignItems: 'stretch', alignContent: 'stretch' }}>
             <Paper style={{ width: '100%', height: '100%', textAlign: 'center' }} zDepth={2}>
-              {this.props.currentTab.response ? <ObjectInspector data={this.props.currentTab.response} initialExpandedPaths={['*']} /> : <CircularProgress size={2} />}
+              {this.props.currentTab.response ? <JSONPretty json={this.props.currentTab.response} initialExpandedPaths={['*']} /> : <CircularProgress size={2} />}
             </Paper>
           </div>
         </div>
