@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './components/App';
-import MainWindow from './components/MainWindow.js';
+import MainWindow from './pages/MainWindow.jsx';
 import Accounts from './pages/Accounts.jsx';
 
 export default (

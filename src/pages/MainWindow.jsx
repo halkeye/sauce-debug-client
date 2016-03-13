@@ -21,8 +21,8 @@ import Divider from 'material-ui/lib/divider';
 import SelectField from 'material-ui/lib/select-field';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 
-import TabBar from './TabBar.js';
-import Login from './Login.js';
+import TabBar from '../components/TabBar.js';
+import Login from '../components/Login.js';
 
 class MainWindow extends React.Component {
   state = { url: '' };
