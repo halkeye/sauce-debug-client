@@ -53,7 +53,8 @@ var config = {
     new CopyWebpackPlugin([
       { from: 'app_package.json', to: '../package.json' },
       { from: 'main.js', to: '../main.js' },
-      { from: 'src/index.' + process.env.NODE_ENV + '.html', to: 'index.html' }
+      { from: 'src/index.development.html', to: 'index.development.html' },
+      { from: 'src/index.production.html', to: 'index.production.html' }
     ]),
 
     // Moment.js imports the locales dynamically which is why webpack will include all 60 locales (>300kb)
