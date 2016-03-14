@@ -1,6 +1,6 @@
 {
   "name": "sauce_debug_client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "REST Client for Sauce Labs day to day",
   "main": "main.js",
   "repository": "halkeye/sauce-debug-client",
