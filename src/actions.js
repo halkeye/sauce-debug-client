@@ -2,6 +2,8 @@ import axios from 'axios';
 import UUID from 'node-uuid';
 
 export const ADD_LOGIN = 'ADD_LOGIN';
+export const DELETE_LOGIN = 'DELETE_LOGIN';
+export const UPDATE_LOGIN = 'UPDATE_LOGIN';
 export const LOAD_LOGINS = 'LOAD_LOGINS';
 
 export const SWITCH_TAB = 'SWITCH_TAB';
@@ -18,6 +20,10 @@ export function loadLogins (logins) {
 export function addLogin (username, password, server) {
   const guid = UUID.v4();
   return { type: ADD_LOGIN, object: { username, password, server, guid } };
+}
+
+export function deleteLogin (guid) {
+  return { type: DELETE_LOGIN, object: guid };
 }
 
 export function switchTab (tabGuid) {

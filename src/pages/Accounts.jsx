@@ -8,28 +8,35 @@ import 'material-design-iconic-font/dist/css/material-design-iconic-font.css';
 
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
-import Divider from 'material-ui/lib/divider';
-import RaisedButton from 'material-ui/lib/raised-button';
 import ActionInfo from 'material-ui/lib/svg-icons/action/info';
+
+import Dialog from 'material-ui/lib/dialog';
+import FlatButton from 'material-ui/lib/flat-button';
+import RaisedButton from 'material-ui/lib/raised-button';
 
 import FormsyText from 'formsy-material-ui/lib/FormsyText.js';
 
 import { Form } from 'formsy-react';
 
+import AccountEditDialog from '../components/AccountEditDialog.js';
+
 class Accounts extends React.Component {
-  state = { canSubmit: false };
+  static propTypes = {
+    logins: PropTypes.array.isRequired
+  };
 
-  enableButton = () => {
-    this.setState({ canSubmit: true });
-  }
+  state = { canSubmit: false, editLogin: false };
 
-  disableButton = () => {
-    this.setState({ canSubmit: false });
-  }
+  handleAddNewClick = () => { this.setState({ editLogin: {} }); }
+  handleNewAccountFormClose  = () => { this.setState({ editLogin: false }); }
+
+  enableButton = () => { this.setState({ canSubmit: true }); }
+  disableButton = () => { this.setState({ canSubmit: false }); }
 
   submitForm = (model) => {
     this.props.addLogin(model.username, model.accesskey, model.server);
     this.refs.form.reset();
+    this.handleNewAccountFormClose();
   }
 
   render () {
@@ -39,66 +46,27 @@ class Accounts extends React.Component {
         <List subhader='Accounts'>{this.props.logins.map((login) => {
           return <ListItem
             key={login.guid}
+            onTouchTap={() => {this.setState({ editLogin: login })}}
             rightIcon={<ActionInfo />}
             secondaryText={login.server}
             primaryText={login.username}
           />;
         })}</List>
-        <Divider />
-        <h4>Add New</h4>
-        <Form ref='form'
-          onValid={this.enableButton}
-          onInvalid={this.disableButton}
-          onValidSubmit={this.submitForm}
-          >
-          <FormsyText
-            name='username'
-            required
-            hintText='Sauce Labs Username'
-            validations='isAlphanumeric,minLength:1,maxLength:1000'
-          />
-          <br />
-          <FormsyText
-            name='accesskey'
-            type='password'
-            required
-            hintText='Sauce Labs Access Key'
-            validations='minLength:1,maxLength:1000'
-          />
-          <br/>
-          <FormsyText
-            name='server'
-            type='url'
-            value='https://saucelabs.com/'
-            required
-            validations='minLength:1,maxLength:1000'
-          />
-          <br/>
-          <RaisedButton
-            type='submit'
-            primary
-            disabled={!this.state.canSubmit}
-            label='Add new Login'
-          />
-        </Form>
+        <RaisedButton
+          primary
+          label='Add New'
+          onTouchTap={this.handleAddNewClick}
+        />
+        {this.state.editLogin ?
+          <AccountEditDialog onDone={this.handleNewAccountFormClose} login={this.state.editLogin} /> :
+          null }
       </div>
     );
   }
 }
 
-Accounts.propTypes = {
-  logins: PropTypes.array.isRequired,
-  addLogin: PropTypes.func.isRequired
-};
-
-function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ addLogin }, dispatch);
-}
-
 function mapStateToProps (state) {
-  return {
-    logins: state.logins
-  };
+  return { logins: state.logins };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Accounts);
+export default connect(mapStateToProps)(Accounts);

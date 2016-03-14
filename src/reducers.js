@@ -14,6 +14,8 @@ function logins (state = initialLogins, action) {
   switch (action.type) {
     case actions.ADD_LOGIN:
       return [...state, action.object];
+    case actions.DELETE_LOGIN:
+      return state.filter((login) => login.guid !== action.object);
     case actions.LOAD_LOGINS:
       return action.object.map((item) => item);
     default:
