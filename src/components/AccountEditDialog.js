@@ -57,6 +57,7 @@ class AccountEditDialog extends React.Component {
         title={this.props.login.guid ? 'Edit' : 'Add'}
         onRequestClose={this.props.onDone}
         actions={actions}
+        autoScrollBodyContent
         open
       >
         <Form ref='form'
