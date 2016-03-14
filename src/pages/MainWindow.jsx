@@ -92,7 +92,7 @@ class MainWindow extends React.Component {
             onInvalid={this.disableButton}
             onValidSubmit={this.onSubmitForm}
           >
-            <div style={{ flexGrow: 2 }}>
+            <div>
               <FormsySelect
                 name='login'
                 required
@@ -106,17 +106,18 @@ class MainWindow extends React.Component {
               />)}
               </FormsySelect>
             </div>
-            <div style={{ flexGrow: 2 }}>
+            <div style={{ flexGrow: 3 }}>
               <FormsyText
                 name='url'
                 required
+                fullWidth
                 type='url'
                 floatingLabelText='URL'
                 validations='minLength:1,maxLength:1000'
                 value={this.props.currentTab.url}
               />
             </div>
-            <div style={{ flexGrow: 1, marginRight: '1em' }}>
+            <div style={{ marginRight: '1em' }}>
               <RaisedButton
                 primary
                 onClick={this.onFormSubmitClick}
