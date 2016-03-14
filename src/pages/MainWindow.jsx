@@ -9,20 +9,17 @@ import 'roboto-font/css/fonts.css';
 import 'material-design-iconic-font/dist/css/material-design-iconic-font.css';
 import 'muicss/lib/css/mui.css';
 
-import JSONPretty from 'react-json-pretty';
-import { ObjectInspector } from 'react-inspector';
-// import Panel from 'muicss/lib/react/panel';
-
-import CircularProgress from 'material-ui/lib/circular-progress';
-import Paper from 'material-ui/lib/paper';
+import FlatButton from 'material-ui/lib/flat-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
 import Divider from 'material-ui/lib/divider';
 import SelectField from 'material-ui/lib/select-field';
 import MenuItem from 'material-ui/lib/menus/menu-item';
+import Dialog from 'material-ui/lib/dialog'
 
 import TabBar from '../components/TabBar.js';
 import Login from '../components/Login.js';
+import Results from '../components/Results.js';
 
 class MainWindow extends React.Component {
   state = { url: '' };
@@ -59,6 +56,23 @@ class MainWindow extends React.Component {
   }
 
   render () {
+    if (!this.props.logins || this.props.logins.length === 0) {
+      const actions = [
+        <FlatButton
+          label="Manage Accounts"
+          primary={true}
+          onTouchTap={this.onClickManageAccounts}
+        />,
+      ];
+      return (
+        <Dialog
+          title="No accounts"
+          actions={actions}
+          modal={true}
+          open={true}
+        />
+      );
+    }
     return (
       <div>
         <TabBar />
@@ -92,9 +106,7 @@ class MainWindow extends React.Component {
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'stretch', alignContent: 'stretch' }}>
-            <Paper style={{ width: '100%', height: '100%', textAlign: 'center' }} zDepth={2}>
-              {this.props.currentTab.response ? <JSONPretty json={this.props.currentTab.response} initialExpandedPaths={['*']} /> : <CircularProgress size={2} />}
-            </Paper>
+            <Results results={this.props.currentTab.results} />
           </div>
         </div>
       </div>
