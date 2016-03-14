@@ -34,21 +34,21 @@ export function switchTabLogin (tabGuid, loginGuid) {
   return { type: SWITCH_TAB_LOGIN, object: { tab: tabGuid, login: loginGuid } };
 }
 
-function requestData (tabGuid) {
-  return { type: REQ_DATA, object: tabGuid };
+function requestData (tabGuid, url) {
+  return { type: REQ_DATA, object: { tab: tabGuid, url } };
 }
 
-function receiveData (tabGuid, json) {
-  return { type: RECV_DATA, object: { tab: tabGuid, json } };
+function receiveData (tabGuid, url, json) {
+  return { type: RECV_DATA, object: { tab: tabGuid, json, url } };
 }
 
-function receiveError (tabGuid, json) {
-  return { type: RECV_ERROR, data: { tab: tabGuid, json } };
+function receiveError (tabGuid, url, json) {
+  return { type: RECV_ERROR, object: { tab: tabGuid, json, url } };
 }
 
 export function fetchData (tabGuid, url) {
   return function (dispatch) {
-    dispatch(requestData(tabGuid));
+    dispatch(requestData(tabGuid, url));
     return axios({
       url: url,
       timeout: 20000,
@@ -56,10 +56,10 @@ export function fetchData (tabGuid, url) {
       responseType: 'json'
     })
     .then(function (response) {
-      dispatch(receiveData(tabGuid, response.data));
+      dispatch(receiveData(tabGuid, url, response.data));
     })
     .catch(function (response) {
-      dispatch(receiveError(tabGuid, response.data));
+      dispatch(receiveError(tabGuid, url, response.data));
     });
   };
 }

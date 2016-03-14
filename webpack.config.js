@@ -25,6 +25,7 @@ var config = {
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader?limit=10000&minetype=application/font-woff&name=[path][name].[ext]' },
       { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader?name=[path][name].[ext]' },
       { test: /\.json$/, loader: 'json' },
+      { test: /\.styl$/, loader: 'style!css!stylus' },
       {
         test: /\.jsx?$/,
         include: /src/,

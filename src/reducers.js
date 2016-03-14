@@ -42,9 +42,16 @@ const initialTabs = [
 function tabs (state = initialTabs, action) {
   switch (action.type) {
     case actions.RECV_DATA:
+    case actions.REQ_DATA:
       return state.map((tab) => {
         if (tab.guid === action.object.tab) {
-          return { ...tab, response: action.object.json };
+          return {
+            ...tab,
+            response: {
+              url: action.object.url,
+              response: action.object.json || false
+            }
+          };
         }
         return tab;
       });

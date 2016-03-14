@@ -15,7 +15,7 @@ import TextField from 'material-ui/lib/text-field';
 import Divider from 'material-ui/lib/divider';
 import SelectField from 'material-ui/lib/select-field';
 import MenuItem from 'material-ui/lib/menus/menu-item';
-import Dialog from 'material-ui/lib/dialog'
+import Dialog from 'material-ui/lib/dialog';
 
 import TabBar from '../components/TabBar.js';
 import Login from '../components/Login.js';
@@ -59,17 +59,17 @@ class MainWindow extends React.Component {
     if (!this.props.logins || this.props.logins.length === 0) {
       const actions = [
         <FlatButton
-          label="Manage Accounts"
-          primary={true}
+          label='Manage Accounts'
+          primary
           onTouchTap={this.onClickManageAccounts}
-        />,
+        />
       ];
       return (
         <Dialog
-          title="No accounts"
+          title='No accounts'
           actions={actions}
-          modal={true}
-          open={true}
+          modal
+          open
         />
       );
     }
@@ -106,7 +106,7 @@ class MainWindow extends React.Component {
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'stretch', alignContent: 'stretch' }}>
-            <Results results={this.props.currentTab.results} />
+            <Results response={this.props.currentTab.response} />
           </div>
         </div>
       </div>
