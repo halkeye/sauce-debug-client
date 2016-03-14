@@ -27,6 +27,10 @@ export function deleteLogin (guid) {
   return { type: DELETE_LOGIN, object: guid };
 }
 
+export function updateLogin (loginGuid, updates) {
+  return { type: UPDATE_LOGIN, object: { login: loginGuid, updates: updates } };
+}
+
 export function switchTab (tabGuid) {
   return { type: SWITCH_TAB, object: tabGuid };
 }

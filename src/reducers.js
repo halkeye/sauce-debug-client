@@ -16,6 +16,13 @@ function logins (state = initialLogins, action) {
       return [...state, action.object];
     case actions.DELETE_LOGIN:
       return state.filter((login) => login.guid !== action.object);
+    case actions.UPDATE_LOGIN:
+      return state.map((login) => {
+        if (login.guid === action.object.login) {
+          return { ...login, ...action.object.updates };
+        }
+        return login;
+      });
     case actions.LOAD_LOGINS:
       return action.object.map((item) => item);
     default:

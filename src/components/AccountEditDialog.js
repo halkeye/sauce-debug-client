@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addLogin, deleteLogin } from '../actions.js';
+import { addLogin, deleteLogin, updateLogin } from '../actions.js';
 
 import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
@@ -14,6 +14,7 @@ class AccountEditDialog extends React.Component {
   static propTypes = {
     login: PropTypes.object.isRequired,
     addLogin: PropTypes.func.isRequired,
+    updateLogin: PropTypes.func.isRequired,
     deleteLogin: PropTypes.func.isRequired,
     onDone: PropTypes.func
   };
@@ -24,7 +25,15 @@ class AccountEditDialog extends React.Component {
   disableButton = () => { this.setState({ canSubmit: false }); }
 
   submitForm = (model) => {
-    this.props.addLogin(model.username, model.accesskey, model.server);
+    if (this.props.login.guid) {
+      this.props.updateLogin(this.props.login.guid, {
+        username: model.username,
+        accesskey: model.accesskey,
+        server: model.server
+      });
+    } else {
+      this.props.addLogin(model.username, model.accesskey, model.server);
+    }
     this.refs.form.reset();
     if (this.props.onDone) { this.props.onDone(); }
   }
@@ -97,7 +106,7 @@ class AccountEditDialog extends React.Component {
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ addLogin, deleteLogin }, dispatch);
+  return bindActionCreators({ addLogin, deleteLogin, updateLogin }, dispatch);
 }
 
 function mapStateToProps (state) { return { }; }
