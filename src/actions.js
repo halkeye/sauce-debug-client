@@ -6,6 +6,7 @@ export const DELETE_LOGIN = 'DELETE_LOGIN';
 export const UPDATE_LOGIN = 'UPDATE_LOGIN';
 export const LOAD_LOGINS = 'LOAD_LOGINS';
 
+export const UPDATE_TAB = 'UPDATE_TAB';
 export const SWITCH_TAB = 'SWITCH_TAB';
 export const SWITCH_TAB_LOGIN = 'SWITCH_TAB_LOGIN';
 
@@ -28,6 +29,10 @@ export function deleteLogin (guid) {
 
 export function switchTab (tabGuid) {
   return { type: SWITCH_TAB, object: tabGuid };
+}
+
+export function updateTab (tabGuid, updates) {
+  return { type: UPDATE_TAB, object: { tab: tabGuid, updates: updates } };
 }
 
 export function switchTabLogin (tabGuid, loginGuid) {

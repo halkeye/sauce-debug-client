@@ -42,9 +42,11 @@ const initialTabs = [
 function tabs (state = initialTabs, action) {
   switch (action.type) {
     case actions.RECV_DATA:
+    case actions.RECV_ERROR:
     case actions.REQ_DATA:
       return state.map((tab) => {
         if (tab.guid === action.object.tab) {
+          // if RECV_ERROR then do stuff
           return {
             ...tab,
             response: {
@@ -52,6 +54,13 @@ function tabs (state = initialTabs, action) {
               response: action.object.json || false
             }
           };
+        }
+        return tab;
+      });
+    case actions.UPDATE_TAB:
+      return state.map((tab) => {
+        if (tab.guid === action.object.tab) {
+          return { ...tab, ...action.object.updates };
         }
         return tab;
       });

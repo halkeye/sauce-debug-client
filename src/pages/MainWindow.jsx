@@ -3,7 +3,7 @@ import url from 'url';
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { switchTab, fetchData, switchTabLogin } from '../actions.js';
+import { switchTab, updateTab, fetchData, switchTabLogin } from '../actions.js';
 
 import 'roboto-font/css/fonts.css';
 import 'material-design-iconic-font/dist/css/material-design-iconic-font.css';
@@ -11,9 +11,6 @@ import 'muicss/lib/css/mui.css';
 
 import FlatButton from 'material-ui/lib/flat-button';
 import RaisedButton from 'material-ui/lib/raised-button';
-import TextField from 'material-ui/lib/text-field';
-import Divider from 'material-ui/lib/divider';
-import SelectField from 'material-ui/lib/select-field';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Dialog from 'material-ui/lib/dialog';
 
@@ -21,13 +18,18 @@ import TabBar from '../components/TabBar.js';
 import Login from '../components/Login.js';
 import Results from '../components/Results.js';
 
+import { Form } from 'formsy-react';
+import FormsyText from 'formsy-material-ui/lib/FormsyText.js';
+import FormsySelect from 'formsy-material-ui/lib/FormsySelect.js';
+
 class MainWindow extends React.Component {
-  state = { url: '' };
+  state = { canRequestUrl: false }
   static contextTypes = {
     router: React.PropTypes.object.isRequired
   };
 
   static propTypes = {
+    updateTab: PropTypes.func.isRequired,
     switchTabLogin: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
     tab: PropTypes.string.isRequired,
@@ -36,19 +38,25 @@ class MainWindow extends React.Component {
     logins: PropTypes.array.isRequired
   };
 
-  onChangeUrl = (ev) => {
-    this.setState({ url: ev.target.value });
-  }
-
   onClickManageAccounts = () => {
     this.context.router.push({ pathname: '/accounts' });
   }
 
-  onClickRequest = () => {
-    this.props.fetchData(this.props.currentTab.guid, url.resolve(
-      this.props.currentTab.login.server,
-      this.props.currentTab.url
-    ));
+  enableButton = () => { this.setState({ canRequestUrl: true }); }
+  disableButton = () => { this.setState({ canRequestUrl: false }); }
+  onFormSubmitClick = () => { this.refs.form.submit(); }
+
+  onSubmitForm = (model) => {
+    let currentLogin = this.props.logins.filter((login) => login.guid === model.login).shift();
+
+    this.props.fetchData(
+      this.props.currentTab.guid,
+      url.resolve(currentLogin.server, model.url)
+    );
+    this.props.updateTab(
+      this.props.currentTab.guid,
+      { login: model.login, url: model.url }
+    );
   }
 
   onChangeLogin = (event, index, loginGuid) => {
@@ -77,34 +85,47 @@ class MainWindow extends React.Component {
       <div>
         <TabBar />
         <div id='appContent'>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Form
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            ref='form'
+            onValid={this.enableButton}
+            onInvalid={this.disableButton}
+            onValidSubmit={this.onSubmitForm}
+          >
             <div style={{ flexGrow: 2 }}>
-              <SelectField
+              <FormsySelect
+                name='login'
+                required
                 value={this.props.currentTab.login.guid}
-                onChange={this.onChangeLogin}
                 floatingLabelText='Account'
               >
-                {this.props.logins.map((login) => <MenuItem key={login.guid} value={login.guid} primaryText={<Login login={login} includeIcon={false} />} />)}
-                <Divider />
-                <MenuItem key='manage' onClick={this.onClickManageAccounts}>
-                  <i className='zmdi zmdi-account-add'></i>
-                  &nbsp;
-                  Manage
-                </MenuItem>
-              </SelectField>
+              {this.props.logins.map((login) => <MenuItem
+                key={login.guid}
+                value={login.guid}
+                primaryText={<Login login={login} includeIcon={false} />}
+              />)}
+              </FormsySelect>
             </div>
             <div style={{ flexGrow: 2 }}>
-              <TextField
+              <FormsyText
+                name='url'
+                required
                 type='url'
                 floatingLabelText='URL'
-                onChange={this.onChangeUrl}
+                validations='minLength:1,maxLength:1000'
                 value={this.props.currentTab.url}
               />
             </div>
             <div style={{ flexGrow: 1, marginRight: '1em' }}>
-              <RaisedButton primary onClick={this.onClickRequest} label='Go' />
+              <RaisedButton
+                primary
+                onClick={this.onFormSubmitClick}
+                label='Go'
+                type='submit'
+                disabled={!this.state.canRequestUrl}
+              />
             </div>
-          </div>
+          </Form>
           <div style={{ display: 'flex', alignItems: 'stretch', alignContent: 'stretch' }}>
             <Results response={this.props.currentTab.response} />
           </div>
@@ -115,7 +136,7 @@ class MainWindow extends React.Component {
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ switchTab, switchTabLogin, fetchData }, dispatch);
+  return bindActionCreators({ updateTab, switchTab, switchTabLogin, fetchData }, dispatch);
 }
 
 function mapStateToProps (state) {
