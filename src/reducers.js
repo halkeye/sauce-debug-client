@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
+import UUID from 'node-uuid';
 
 import * as actions from './actions.js';
 
@@ -35,6 +36,7 @@ const initialTabs = [
     login: 'c3cd7e60-69ff-4740-a477-df0c418c6db0',
     guid: '0fcd1577-a43b-4c8b-bee2-ed2db7dc6996',
     label: 'Info',
+    selected: true,
     url: 'rest/v1/info/status'
   },
   {
@@ -63,6 +65,13 @@ function tabs (state = initialTabs, action) {
           };
         }
         return tab;
+      });
+    case actions.ADD_TAB:
+      const guid = UUID.v4();
+      return state.concat({
+        guid: guid,
+        label: 'New Tab',
+        url: ''
       });
     case actions.UPDATE_TAB:
       return state.map((tab) => {
@@ -96,18 +105,8 @@ function tabs (state = initialTabs, action) {
   */
 }
 
-function tab (state = initialTabs[0].guid, action) {
-  switch (action.type) {
-    case actions.SWITCH_TAB:
-      return action.object;
-    default:
-      return state;
-  }
-}
-
 export default combineReducers({
   tabs,
-  tab,
   logins,
   routing
 });

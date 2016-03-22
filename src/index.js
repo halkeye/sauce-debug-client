@@ -14,7 +14,8 @@ import 'app.css';
 import configureStore from './store/configureStore';
 import routes from './routes';
 
-const store = configureStore();
+const initialStore = window.require('remote').getGlobal('initialStoreState');
+const store = configureStore(initialStore);
 const history = syncHistoryWithStore(hashHistory, store);
 
 ipcRenderer.on('manage-accounts', () => {

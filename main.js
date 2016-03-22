@@ -4,8 +4,10 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
 const fs = require('fs');
+const url = require('url');
 const path = require('path');
 const electron = require('electron');
+const fileExists = require('file-exists');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const Menu = electron.Menu;
@@ -28,41 +30,37 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const accountsFile = path.join(app.getPath('userData'), 'accounts.json');
+console.log('accountFile: ', accountsFile);
+
 ipcMain.on('save-accounts', (event, accounts) => {
   fs.writeFile(accountsFile, JSON.stringify(accounts));
 });
 
-ipcMain.on('ready-load-accounts', () => {
-  fs.access(accountsFile, fs.R_OK, function (err) {
-    if (err) return;
-    fs.readFile(accountsFile, function (err, data) {
-      if (err) return;
-      mainWindow.webContents.send('load-accounts', JSON.parse(data.toString()));
-    });
-  });
-});
+global.initialStoreState = {};
+if (fileExists(accountsFile)) {
+  global.initialStoreState.logins = JSON.parse(fs.readFileSync(accountsFile).toString());
+}
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
 app.on('ready', () => {
+  // FIXME - remember window size - https://github.com/atom/electron/issues/526
   mainWindow = new BrowserWindow({ width: 1024, height: 728 });
-
-  ipcMain.on('save-accounts', (event, accounts) => {
-    const filename = path.join(app.getPath('userData'), 'accounts.json');
-    fs.writeFile(filename, JSON.stringify(accounts));
+  var indexUrl = url.format({
+    protocol: 'file',
+    pathname: path.resolve(__dirname, 'src', 'index.' + process.env.NODE_ENV + '.html'),
+    slashes: true/*,
+    hash: encodeURIComponent(JSON.stringify(someArgs))*/
   });
 
   if (process.env.NODE_ENV === 'development') {
-    // and load the index.html of the app.
-    mainWindow.loadURL('file://' + __dirname + '/src/index.development.html'); // eslint-disable-line no-path-concat
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
-  } else {
-    // and load the index.html of the app.
-    mainWindow.loadURL('file://' + __dirname + '/public/index.production.html'); // eslint-disable-line no-path-concat
   }
+
+  mainWindow.loadURL(indexUrl);
 
   mainWindow.on('closed', () => {
     mainWindow = null;
