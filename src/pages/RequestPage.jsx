@@ -83,8 +83,10 @@ class RequestPage extends React.Component {
           onInvalid={this.disableButton}
           onValidSubmit={this.onSubmitForm}
         >
-          <div>
+          <div style={{ paddingRight: '10px' }}>
             <FormsySelect
+              fullWidth
+              autoWidth
               name='login'
               required
               value={this.props.currentLogin.guid}
