@@ -1,5 +1,3 @@
-import url from 'url';
-
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -12,10 +10,13 @@ import Tab from 'material-ui/lib/tabs/tab';
 import Tabs from 'react-draggable-tab/lib/components/Tabs.js';
 import Tab from 'react-draggable-tab/lib/components/Tab.js';
 
-import RequestPage from './RequestPage.jsx'
+import RequestPage from './RequestPage.jsx';
 
 class MainWindow extends React.Component {
   static propTypes = {
+    addTab: PropTypes.func.isRequired,
+    switchTab: PropTypes.func.isRequired,
+    currentTab: PropTypes.object.isRequired,
     tabs: PropTypes.array.isRequired,
     tab: PropTypes.string.isRequired
   };
