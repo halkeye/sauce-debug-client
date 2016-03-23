@@ -29,6 +29,10 @@ store.subscribe(() => {
   }
 });
 
+// Makes sure react-ui's touch events work
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
 import MainWindow from './pages/MainWindow.jsx';
 
 const Entry = () => (

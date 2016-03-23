@@ -7,14 +7,13 @@ import AppBar from 'material-ui/lib/app-bar';
 import Divider from 'material-ui/lib/divider';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
+import IconButton from 'material-ui/lib/icon-button';
 import Paper from 'material-ui/lib/paper';
+import EditIcon from 'material-ui/lib/svg-icons/editor/mode-edit';
+import CreateIcon from 'material-ui/lib/svg-icons/content/add-box';
 
 import AccountPage from './Accounts.jsx';
 import RequestPage from './RequestPage.jsx';
-
-// Makes sure react-ui's touch events work
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
 
 class TabListItem extends React.Component {
   static propTypes = {
@@ -26,12 +25,20 @@ class TabListItem extends React.Component {
     this.props.onClick(this.props.tab.guid);
   }
 
+  onEdit = () => {
+    alert('hi');
+  }
+
   render () {
     const style = {};
     if (this.props.tab.selected) {
       style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
     }
-    return <ListItem style={style} onClick={this.onClick}>{this.props.tab.label}</ListItem>;
+    return <ListItem
+      style={style}
+      rightIconButton={<IconButton onClick={this.onEdit}><EditIcon /></IconButton>}
+      onClick={this.onClick}
+    >{this.props.tab.label}</ListItem>;
   }
 }
 
@@ -56,21 +63,22 @@ class MainWindow extends React.Component {
   }
 
   render () {
+    const sideBarWidth = 200;
     return (
       <div>
         <AppBar style={{ zIndex: 9000 }} title='Rest Tester' />
-        <div style={{ width: '140px', position: 'absolute', height: '100%' }}>
+        <div style={{ width: sideBarWidth, position: 'absolute', height: '100%' }}>
           <Paper zDepth={2} rounded={false} style={{ height: '100%' }}>
-            <List>
-              <ListItem onClick={this.handleClickAccounts} >Accounts</ListItem>
-            </List>
+            <ListItem onClick={this.handleClickAccounts} >Accounts</ListItem>
+            <Divider />
+            <ListItem leftIcon={<CreateIcon/>}>New Request</ListItem>
             <Divider />
             <List>
               {this.props.tabs.map((tab) => <TabListItem key={tab.guid} onClick={this.props.switchTab} tab={tab} />)}
             </List>
           </Paper>
         </div>
-        <div style={{ paddingLeft: '150px' }}>
+        <div style={{ paddingLeft: sideBarWidth + 10 }}>
           {this.props.currentTab ? <RequestPage tab={this.props.currentTab} /> : <AccountPage />}
         </div>
       </div>
