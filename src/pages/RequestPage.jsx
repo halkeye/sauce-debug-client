@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { switchTab, updateTab, fetchData, switchTabLogin } from '../actions.js';
 
-import FlatButton from 'material-ui/lib/flat-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Dialog from 'material-ui/lib/dialog';
@@ -19,21 +18,15 @@ import FormsySelect from 'formsy-material-ui/lib/FormsySelect.js';
 
 class RequestPage extends React.Component {
   state = { canRequestUrl: false }
-  static contextTypes = {
-    router: React.PropTypes.object.isRequired
-  };
 
   static propTypes = {
+    updateTab: PropTypes.func.isRequired,
     switchTabLogin: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
     tab: PropTypes.object.isRequired,
     logins: PropTypes.array.isRequired,
     currentLogin: PropTypes.object
   };
-
-  onClickManageAccounts = () => {
-    this.context.router.push({ pathname: '/accounts' });
-  }
 
   enableButton = () => { this.setState({ canRequestUrl: true }); }
   disableButton = () => { this.setState({ canRequestUrl: false }); }
@@ -58,17 +51,9 @@ class RequestPage extends React.Component {
 
   render () {
     if (!this.props.currentLogin || !this.props.logins || this.props.logins.length === 0) {
-      const actions = [
-        <FlatButton
-          label='Manage Accounts'
-          primary
-          onTouchTap={this.onClickManageAccounts}
-        />
-      ];
       return (
         <Dialog
           title='No accounts'
-          actions={actions}
           modal
           open
         />

@@ -31,7 +31,7 @@ export default class App extends Component {
   render () {
     return (
       <div>
-        <AppBar onTouchTap={this.handleToggle} title='Rest Tester' />
+        <AppBar style={{ position: 'fixed', top: 0 }} onTouchTap={this.handleToggle} title='Rest Tester' />
         <LeftNav
           docked={false}
           width={200}

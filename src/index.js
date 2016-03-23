@@ -2,24 +2,17 @@ const ipcRenderer = window.require('electron').ipcRenderer;
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, hashHistory } from 'react-router';
-import { syncHistoryWithStore, push } from 'react-router-redux';
 import { loadLogins } from './actions.js';
+
+import configureStore from './store/configureStore';
 
 import 'app.css';
 
-// import * as storage from 'redux-storage';
-// import createEngine from 'redux-storage-engine-localstorage';
-
-import configureStore from './store/configureStore';
-import routes from './routes';
-
 const initialStore = window.require('remote').getGlobal('initialStoreState');
 const store = configureStore(initialStore);
-const history = syncHistoryWithStore(hashHistory, store);
 
 ipcRenderer.on('manage-accounts', () => {
-  store.dispatch(push('/accounts'));
+//  store.dispatch(push('/accounts'));
 });
 
 ipcRenderer.on('load-accounts', (event, data) => {
@@ -36,9 +29,11 @@ store.subscribe(() => {
   }
 });
 
+import MainWindow from './pages/MainWindow.jsx';
+
 const Entry = () => (
   <Provider store={store}>
-    <Router history={history} routes={routes} />
+    <MainWindow />
   </Provider>
 );
 
