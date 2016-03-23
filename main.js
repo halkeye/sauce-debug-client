@@ -50,7 +50,7 @@ app.on('ready', () => {
   mainWindow = new BrowserWindow({ width: 1024, height: 728 });
   var indexUrl = url.format({
     protocol: 'file',
-    pathname: path.resolve(__dirname, 'src', 'index.' + process.env.NODE_ENV + '.html'),
+    pathname: path.resolve(__dirname, (process.env.NODE_ENV === 'production' ? 'public' : 'src'), 'index.' + process.env.NODE_ENV + '.html'),
     slashes: true/*,
     hash: encodeURIComponent(JSON.stringify(someArgs))*/
   });

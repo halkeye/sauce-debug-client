@@ -7,6 +7,7 @@
   "author": "Gavin Mogan <gavin@gavinmogan.com>",
   "license": "MIT",
   "dependencies": {
+    "file-exists": "^1.0.0"
   },
   "build": {
     "app-bundle-id": "com.gavinmogan.sauce-debug-client",
