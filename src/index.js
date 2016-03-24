@@ -22,7 +22,15 @@ store.subscribe(() => {
     ipcRenderer.send('save-accounts', state.logins);
   }
   if (prevState.tabs !== state.tabs) {
-    ipcRenderer.send('save-tabs', state.tabs);
+    ipcRenderer.send('save-tabs', state.tabs.map((tab) => {
+      return Object.keys(tab).reduce((data, fieldName) => {
+        /* filter out response data */
+        if (fieldName !== 'response') {
+          data[fieldName] = tab[fieldName];
+        }
+        return data;
+      }, {});
+    }));
   }
 });
 
