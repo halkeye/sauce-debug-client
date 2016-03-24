@@ -50,12 +50,8 @@ class MainWindow extends React.Component {
     tabs: PropTypes.array.isRequired
   };
 
-  handleTabAddButtonClick = () => {
+  handleCreateNewRequest = () => {
     this.props.addTab();
-  }
-
-  handleDoubleClickTab = (...args) => {
-    console.log('gavin', ...args);
   }
 
   handleClickAccounts = () => {
@@ -71,7 +67,7 @@ class MainWindow extends React.Component {
           <Paper zDepth={2} rounded={false} style={{ height: '100%' }}>
             <ListItem onClick={this.handleClickAccounts} >Accounts</ListItem>
             <Divider />
-            <ListItem leftIcon={<CreateIcon/>}>New Request</ListItem>
+            <ListItem onClick={this.handleCreateNewRequest} leftIcon={<CreateIcon/>}>New Request</ListItem>
             <Divider />
             <List>
               {this.props.tabs.map((tab) => <TabListItem key={tab.guid} onClick={this.props.switchTab} tab={tab} />)}
