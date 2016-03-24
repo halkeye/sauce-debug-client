@@ -14,11 +14,13 @@ import CreateIcon from 'material-ui/lib/svg-icons/content/add-box';
 
 import AccountPage from './Accounts.jsx';
 import RequestPage from './RequestPage.jsx';
+import EditTabDialog from '../components/EditTabDialog.jsx';
 
 class TabListItem extends React.Component {
   static propTypes = {
     tab: PropTypes.object.isRequired,
-    onClick: PropTypes.func.isRequired
+    onClick: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired
   };
 
   onClick = () => {
@@ -26,7 +28,7 @@ class TabListItem extends React.Component {
   }
 
   onEdit = () => {
-    alert('hi');
+    this.props.onEdit(this.props.tab);
   }
 
   render () {
@@ -46,6 +48,7 @@ class MainWindow extends React.Component {
   static propTypes = {
     addTab: PropTypes.func.isRequired,
     switchTab: PropTypes.func.isRequired,
+    updateTab: PropTypes.func.isRequired,
     currentTab: PropTypes.object,
     tabs: PropTypes.array.isRequired
   };
@@ -56,6 +59,19 @@ class MainWindow extends React.Component {
 
   handleClickAccounts = () => {
     this.props.switchTab('');
+  }
+
+  handleEditTab = (tab) => {
+    this.setState({ editTab: tab });
+  }
+
+  handleCloseEditTab = () => {
+    this.setState({ editTab: null });
+  }
+
+  handleUpdateTab = (guid, label) => {
+    this.props.updateTab(guid, { label });
+    this.setState({ editTab: null });
   }
 
   render () {
@@ -70,12 +86,22 @@ class MainWindow extends React.Component {
             <ListItem onClick={this.handleCreateNewRequest} leftIcon={<CreateIcon/>}>New Request</ListItem>
             <Divider />
             <List>
-              {this.props.tabs.map((tab) => <TabListItem key={tab.guid} onClick={this.props.switchTab} tab={tab} />)}
+              {this.props.tabs.map((tab) => <TabListItem
+                key={tab.guid}
+                onEdit={this.handleEditTab}
+                onClick={this.props.switchTab}
+                tab={tab}
+              />)}
             </List>
           </Paper>
         </div>
         <div style={{ paddingLeft: sideBarWidth + 10 }}>
           {this.props.currentTab ? <RequestPage tab={this.props.currentTab} /> : <AccountPage />}
+          {this.state && this.state.editTab && <EditTabDialog
+            tab={this.state.editTab}
+            onClose={this.handleCloseEditTab}
+            onSave={this.handleUpdateTab}
+          />}
         </div>
       </div>
     );
