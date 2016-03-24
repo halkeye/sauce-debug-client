@@ -31,15 +31,15 @@ if (process.env.NODE_ENV === 'development') {
 
 const accountsFile = path.join(app.getPath('userData'), 'accounts.json');
 console.log('accountFile: ', accountsFile);
+const tabsFile = path.join(app.getPath('userData'), 'tabs.json');
+console.log('tabFile: ', tabsFile);
 
-ipcMain.on('save-accounts', (event, accounts) => {
-  fs.writeFile(accountsFile, JSON.stringify(accounts));
-});
+ipcMain.on('save-accounts', (event, accounts) => { fs.writeFile(accountsFile, JSON.stringify(accounts)); });
+ipcMain.on('save-tabs', (event, tabs) => { fs.writeFile(tabsFile, JSON.stringify(tabs)); });
 
 global.initialStoreState = {};
-if (fileExists(accountsFile)) {
-  global.initialStoreState.logins = JSON.parse(fs.readFileSync(accountsFile).toString());
-}
+if (fileExists(accountsFile)) { global.initialStoreState.logins = JSON.parse(fs.readFileSync(accountsFile).toString()); }
+if (fileExists(tabsFile)) { global.initialStoreState.tabs = JSON.parse(fs.readFileSync(tabsFile).toString()); }
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();

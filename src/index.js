@@ -15,17 +15,14 @@ ipcRenderer.on('manage-accounts', () => {
 //  store.dispatch(push('/accounts'));
 });
 
-ipcRenderer.on('load-accounts', (event, data) => {
-  store.dispatch(loadLogins(data));
-});
-
-ipcRenderer.send('ready-load-accounts');
-
 let prevState = store.getState();
 store.subscribe(() => {
   const state = store.getState();
   if (prevState.logins !== state.logins) {
     ipcRenderer.send('save-accounts', state.logins);
+  }
+  if (prevState.tabs !== state.tabs) {
+    ipcRenderer.send('save-tabs', state.tabs);
   }
 });
 
