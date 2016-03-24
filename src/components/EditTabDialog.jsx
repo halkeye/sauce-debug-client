@@ -12,7 +12,8 @@ export default class EditTabDialog extends React.Component {
   static propTypes = {
     tab: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired
+    onSave: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired
   };
 
   enableButton = () => { this.setState({ canSubmit: true }); }
@@ -22,13 +23,18 @@ export default class EditTabDialog extends React.Component {
   submitForm = (model) => {
     this.props.onSave(this.props.tab.guid, model.label);
   }
+  onClickDelete = () => { this.props.onDelete(this.props.tab.guid); }
 
   render () {
     const actions = [
       <FlatButton
         label='Cancel'
-        secondary
         onTouchTap={this.props.onClose}
+      />,
+      <FlatButton
+        label='Delete'
+        secondary
+        onTouchTap={this.onClickDelete}
       />,
       <FlatButton
         label='Submit'

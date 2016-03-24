@@ -80,6 +80,8 @@ function tabs (state = initialTabs, action) {
         }
         return tab;
       });
+    case actions.DELETE_TAB:
+      return state.filter((tab) => tab.guid !== action.object);
     case actions.SWITCH_TAB:
       return state.map((tab) => {
         if (tab.guid === action.object) {

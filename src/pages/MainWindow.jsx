@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addTab, switchTab, updateTab } from '../actions.js';
+import { addTab, switchTab, updateTab, deleteTab } from '../actions.js';
 
 import AppBar from 'material-ui/lib/app-bar';
 import Divider from 'material-ui/lib/divider';
@@ -49,6 +49,7 @@ class MainWindow extends React.Component {
     addTab: PropTypes.func.isRequired,
     switchTab: PropTypes.func.isRequired,
     updateTab: PropTypes.func.isRequired,
+    deleteTab: PropTypes.func.isRequired,
     currentTab: PropTypes.object,
     tabs: PropTypes.array.isRequired
   };
@@ -66,12 +67,17 @@ class MainWindow extends React.Component {
   }
 
   handleCloseEditTab = () => {
-    this.setState({ editTab: null });
+    this.handleEditTab(null);
+  }
+
+  handleDeleteEditTab = (guid) => {
+    this.props.deleteTab(guid);
+    this.handleCloseEditTab();
   }
 
   handleUpdateTab = (guid, label) => {
     this.props.updateTab(guid, { label });
-    this.setState({ editTab: null });
+    this.handleCloseEditTab();
   }
 
   render () {
@@ -100,6 +106,7 @@ class MainWindow extends React.Component {
           {this.state && this.state.editTab && <EditTabDialog
             tab={this.state.editTab}
             onClose={this.handleCloseEditTab}
+            onDelete={this.handleDeleteEditTab}
             onSave={this.handleUpdateTab}
           />}
         </div>
@@ -109,7 +116,7 @@ class MainWindow extends React.Component {
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ addTab, updateTab, switchTab }, dispatch);
+  return bindActionCreators({ addTab, updateTab, deleteTab, switchTab }, dispatch);
 }
 
 function mapStateToProps (state) {

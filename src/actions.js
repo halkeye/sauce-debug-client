@@ -8,6 +8,7 @@ export const LOAD_LOGINS = 'LOAD_LOGINS';
 
 export const ADD_TAB = 'ADD_TAB';
 export const UPDATE_TAB = 'UPDATE_TAB';
+export const DELETE_TAB = 'DELETE_TAB';
 export const SWITCH_TAB = 'SWITCH_TAB';
 export const SWITCH_TAB_LOGIN = 'SWITCH_TAB_LOGIN';
 
@@ -42,6 +43,10 @@ export function switchTab (tabGuid) {
 
 export function updateTab (tabGuid, updates) {
   return { type: UPDATE_TAB, object: { tab: tabGuid, updates: updates } };
+}
+
+export function deleteTab (tabGuid) {
+  return { type: DELETE_TAB, object: tabGuid };
 }
 
 export function switchTabLogin (tabGuid, loginGuid) {
