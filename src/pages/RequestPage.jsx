@@ -31,7 +31,7 @@ class PresetMenuItem extends React.Component {
   }
 
   render () {
-    return <MenuItem primaryText={this.props.primaryText} onClick={this.onClick} />;
+    return <MenuItem primaryText={this.props.primaryText} onTouchTap={this.onClick} />;
   }
 }
 
@@ -47,8 +47,11 @@ class PresetMenu extends React.Component {
         anchorOrigin={{horizontal: 'left', vertical: 'top'}}
         targetOrigin={{horizontal: 'left', vertical: 'top'}}
         >
+        <MenuItem primaryText='Presets' style={{ fontStyle: 'underline', fontWeight: 'bold' }} />
         <PresetMenuItem primaryText='Status' value='rest/v1/info/status' onClick={this.props.onSelectPreset} />
         <PresetMenuItem primaryText='User Info' value='rest/v1/users/:username:' onClick={this.props.onSelectPreset} />
+        <PresetMenuItem primaryText='Full tunnel information' value='rest/v1/:username:/tunnels?full=1' onClick={this.props.onSelectPreset} />
+        <PresetMenuItem primaryText='Stored Files' value='rest/v1/storage/:username:' onClick={this.props.onSelectPreset} />
       </IconMenu>
     );
   }
