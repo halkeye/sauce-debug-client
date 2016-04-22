@@ -65,20 +65,27 @@ function receiveError (tabGuid, url, json) {
   return { type: RECV_ERROR, object: { tab: tabGuid, json, url } };
 }
 
-export function fetchData (tabGuid, url) {
+export function fetchData (login, tab, url) {
   return function (dispatch) {
-    dispatch(requestData(tabGuid, url));
+    dispatch(requestData(tab.guid, url));
     return axios({
       url: url,
       timeout: 20000,
       method: 'get',
+      headers: {
+        'User-Agent': 'SauceDebugClient/0.0.0'
+      },
+      auth: {
+        username: login.username,
+        password: login.accesskey
+      },
       responseType: 'json'
     })
     .then(function (response) {
-      dispatch(receiveData(tabGuid, url, response.data));
+      dispatch(receiveData(tab.guid, url, response.data));
     })
     .catch(function (response) {
-      dispatch(receiveError(tabGuid, url, response.data));
+      dispatch(receiveError(tab.guid, url, response.data));
     });
   };
 }

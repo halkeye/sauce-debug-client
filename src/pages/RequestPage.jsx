@@ -36,7 +36,8 @@ class RequestPage extends React.Component {
     let currentLogin = this.props.logins.filter((login) => login.guid === model.login).shift();
 
     this.props.fetchData(
-      this.props.tab.guid,
+      currentLogin,
+      this.props.tab,
       url.resolve(currentLogin.server, model.url)
     );
     this.props.updateTab(
