@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { switchTab, updateTab, fetchData, switchTabLogin } from '../actions.js';
 
-import Dialog from 'material-ui/lib/dialog';
+import FlatButton from 'material-ui/lib/flat-button';
 import IconButton from 'material-ui/lib/icon-button';
 import IconMenu from 'material-ui/lib/menus/icon-menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
@@ -62,6 +62,7 @@ class RequestPage extends React.Component {
   static propTypes = {
     updateTab: PropTypes.func.isRequired,
     switchTabLogin: PropTypes.func.isRequired,
+    switchTab: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
     tab: PropTypes.object.isRequired,
     logins: PropTypes.array.isRequired,
@@ -97,11 +98,11 @@ class RequestPage extends React.Component {
   render () {
     if (!this.props.currentLogin || !this.props.logins || this.props.logins.length === 0) {
       return (
-        <Dialog
-          title='No accounts'
-          modal
-          open
-        />
+        <div id='appContent'>
+          <div>There are currently no accounts setup.</div>
+          <br />
+          <div>Please goto <FlatButton primary onClick={this.props.switchTab} label='Accounts Section' /> and add some accounts.</div>
+        </div>
       );
     }
     return (
