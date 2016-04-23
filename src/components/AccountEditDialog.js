@@ -85,7 +85,7 @@ class AccountEditDialog extends React.Component {
           <FormsyText
             name='accesskey'
             type='password'
-            value={this.props.login.password}
+            value={this.props.login.accesskey}
             required
             hintText='Sauce Labs Access Key'
             validations='minLength:1,maxLength:1000'

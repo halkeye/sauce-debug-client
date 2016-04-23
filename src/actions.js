@@ -20,9 +20,9 @@ export function loadLogins (logins) {
   return { type: LOAD_LOGINS, object: logins };
 }
 
-export function addLogin (username, password, server) {
+export function addLogin (username, accesskey, server) {
   const guid = UUID.v4();
-  return { type: ADD_LOGIN, object: { username, password, server, guid } };
+  return { type: ADD_LOGIN, object: { username, accesskey, server, guid } };
 }
 
 export function deleteLogin (guid) {
