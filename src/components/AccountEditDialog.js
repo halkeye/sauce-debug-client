@@ -79,7 +79,7 @@ class AccountEditDialog extends React.Component {
             required
             value={this.props.login.username}
             hintText='Sauce Labs Username'
-            validations='isAlphanumeric,minLength:1,maxLength:1000'
+            validations='minLength:1,maxLength:1000'
           />
           <br />
           <FormsyText
